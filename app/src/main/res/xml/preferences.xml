@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="first_preferencescreen">
+
+    <PreferenceCategory
+        android:title="@string/pref_category_title_manage">
+
+        <PreferenceScreen
+            android:title="@string/pref_manage_account_categories_title"
+            android:summary="@string/pref_manage_account_categories_summary">
+            <intent android:action="myexpenseorganizer.intent.manage.accountcategories"/>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="@string/pref_manage_categories_title"
+            android:summary="@string/pref_manage_categories_summary">
+            <intent android:action="myexpenseorganizer.intent.manage.expensecategories"/>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="@string/pref_manage_transaction_categories_title"
+            android:summary="@string/pref_manage_transaction_categories_summary">
+            <intent android:action="myexpenseorganizer.intent.manage.transactioncategories"/>
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+    <!--PreferenceCategory
+        android:title="Export">
+
+        <PreferenceScreen
+            android:title="Folder for exports"
+            android:summary="Open folder.">
+            <intent android:action="myexpenseorganizer.intent.view.folder"/>
+        </PreferenceScreen>
+
+    </PreferenceCategory-->
+
+</PreferenceScreen>

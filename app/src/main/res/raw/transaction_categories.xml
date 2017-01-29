@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transaction_categories>
+    <category Na="Adjustment" />
+    <category Na="ATM Transaction" />
+    <category Na="Authorization" />
+    <category Na="Bill Payment" />
+    <category Na="Cash Advance" />
+    <category Na="Charge" />
+    <category Na="Check" />
+    <category Na="Debit card transaction" />
+    <category Na="Deposit" />
+    <category Na="Fee" />
+    <category Na="Incoming wire transfer" />
+    <category Na="Loan Payment" />
+    <category Na="Other" />
+    <category Na="Outgoing wire transfer" />
+    <category Na="Payment" />
+    <category Na="Refund" />
+    <category Na="Return" />
+    <category Na="Reversal" />
+    <category Na="Sale" />
+</transaction_categories>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<account_categories>
+    <category Na="Bill" />
+    <category Na="Cash" />
+    <category Na="Credit card" />
+    <category Na="Debit card" />
+    <category Na="Income" />
+    <category Na="Other" />
+</account_categories>

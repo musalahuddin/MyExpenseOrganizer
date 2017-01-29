@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">Expense Organizer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_section1">Accounts</string>
+    <string name="title_section2">Transactions</string>
+    <string name="title_section3">Budgets</string>
+    <string name="action_example">Example action</string>
+    <string name="parse_error_no_data_found">No data found to import.</string>
+    <string name="parse_error_parse_exception">Could not parse file</string>
+    <string name="parse_error_other_exception">An error occurred</string>
+    <string name="import_categories_success">%1$s categories imported successfully</string>
+    <string name="pref_category_title_manage">Manage</string>
+    <string name="pref_manage_categories_title">Expense categories</string>
+    <string name="pref_manage_categories_summary">Add, edit, delete expense categories.</string>
+    <string name="pref_manage_account_categories_title">Account categories</string>
+    <string name="pref_manage_account_categories_summary">Add, edit, delete account categories.</string>
+    <string name="pref_manage_transaction_categories_title">Transaction methods</string>
+    <string name="pref_manage_transaction_categories_summary">Add, edit, delete transaction methods.</string>
+    <string name="select_account_category">Select account category</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_edit_account_cat">Edit account category</string>
+    <string name="menu_create_account_cat">New account category</string>
+    <string name="menu_create_main_cat">New category</string>
+    <string name="no_title_given">You did not enter any title.</string>
+    <string name="menu_create_sub_cat">New sub category</string>
+    <string name="menu_edit_cat">Edit category</string>
+    <string name="pref_manage_expense_categories_title">Expense Categories</string>
+    <string name="select_expense_category">Select expense category</string>
+    <string name="select_transaction_category">Select transaction category</string>
+    <string name="menu_create_transaction_cat">New transaction method</string>
+    <string name="menu_edit_transaction_cat">Edit transaction method</string>
+    <string name="account_name">Name</string>
+    <string name="account_number">Account #</string>
+    <string name="account_balance">Balance</string>
+    <string name="account_category">Category</string>
+    <string name="account_limit">Limit</string>
+    <string name="account_description">Description</string>
+    <string name="account_due">Due date</string>
+    <string name="account_payment">Payment</string>
+    <string name="hint_account_name">Name</string>
+    <string name="hint_account_number">Last 4 digits</string>
+    <string name="hint_account_description">Description</string>
+    <string name="hint_account_balance">Initial balance</string>
+    <string name="hint_account_limit">Credit limit</string>
+    <string name="hint_account_payment">Monthly payment</string>
+    <string name="hint_account_due">Date</string>
+    <string name="hint_account_category">Category</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="account_new_title">New account</string>
+    <string name="account_edit_title">Edit Account</string>
+    <string name="picture_camera">Take a Picture</string>
+    <string name="picture_gallery">Select from Gallery</string>
+    <string name="picture_clear">Delete Picture</string>
+    <string name="transaction_new_title">New transaction</string>
+    <string name="transaction_edit_title">Edit transaction</string>
+    <string name="picture_view">View Picture</string>
+    <string name="budget_new_title">New budget</string>
+    <string name="budget_edit_title">Edit budget</string>
+
+    <string-array name="action_list">
+        <item >chase freedom</item>
+        <item >chase slate</item>
+        <item >citi simplicity</item>
+        <item >citi preffered</item>
+        <item >capital one</item>
+    </string-array>
+</resources>

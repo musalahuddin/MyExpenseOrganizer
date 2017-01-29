@@ -1,0 +1,82 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:visibility="gone"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <Spinner
+            android:id="@+id/sp_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/tv_budget_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="13dp"
+            android:layout_marginTop="5dp"
+            android:text="dil"
+            android:layout_below="@+id/sp_account"
+            android:layout_centerHorizontal="true" />
+
+        <ProgressBar
+            android:id="@+id/pb_budget_progress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_below="@id/tv_budget_period"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/tv_budget_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_alignBottom="@id/pb_budget_progress"
+            android:layout_alignTop="@id/pb_budget_progress"
+            android:textColor="#666666"
+            android:textStyle="normal"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:text="$0.00 of $0.00"/>
+
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:drawSelectorOnTop="false" />
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="No Budgets Yet!"
+        android:textColor="#525252"
+        android:textSize="15dp"
+        android:visibility="gone" />
+
+
+</LinearLayout>

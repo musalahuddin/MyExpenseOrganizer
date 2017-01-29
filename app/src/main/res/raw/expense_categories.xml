@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<expense_categories>
+    <category Nb="1" Na="Income" >
+        <sub_category Nbc="1" Nb="1" Na="Paycheck" />
+        <sub_category Nbc="1" Nb="2" Na="Investment" />
+        <sub_category Nbc="1" Nb="3" Na="Returned Purchase" />
+        <sub_category Nbc="1" Nb="4" Na="Bonus" />
+        <sub_category Nbc="1" Nb="5" Na="Reimbursement" />
+        <sub_category Nbc="1" Nb="6" Na="Rental Income" />
+    </category>
+    <category Nb="2" Na="Entertainment" >
+        <sub_category Nbc="2" Nb="1" Na="Art" />
+        <sub_category Nbc="2" Nb="2" Na="Music" />
+        <sub_category Nbc="2" Nb="3" Na="Movies" />
+        <sub_category Nbc="2" Nb="4" Na="Newspaper &amp; Magazine" />
+    </category>
+    <category Nb="3" Na="Education" >
+        <sub_category Nbc="3" Nb="1" Na="Tuition" />
+        <sub_category Nbc="3" Nb="2" Na="Student Loan" />
+        <sub_category Nbc="3" Nb="3" Na="Books &amp; Supplies" />
+    </category>
+    <category Nb="4" Na="Shopping" >
+        <sub_category Nbc="4" Nb="1" Na="Clothing" />
+        <sub_category Nbc="4" Nb="2" Na="Online" />
+        <sub_category Nbc="4" Nb="3" Na="Electronics &amp; Software" />
+    </category>
+    <category Nb="5" Na="Personal Care" >
+        <sub_category Nbc="5" Nb="1" Na="Laundry" />
+        <sub_category Nbc="5" Nb="2" Na="Hair" />
+    </category>
+    <category Nb="6" Na="Healthcare" >
+        <sub_category Nbc="6" Nb="1" Na="Dentist" />
+        <sub_category Nbc="6" Nb="2" Na="Doctor" />
+        <sub_category Nbc="6" Nb="3" Na="Eyecare" />
+        <sub_category Nbc="6" Nb="4" Na="Pharmacy" />
+        <sub_category Nbc="6" Nb="5" Na="Health Insurance" />
+    </category>
+    <category Nb="7" Na="Kids" >
+        <sub_category Nbc="7" Nb="1" Na="Allowance" />
+        <sub_category Nbc="7" Nb="2" Na="Baby Supplies" />
+        <sub_category Nbc="7" Nb="3" Na="Babysitter &amp; Daycare" />
+        <sub_category Nbc="7" Nb="4" Na="Toys" />
+    </category>
+    <category Nb="8" Na="Food" >
+        <sub_category Nbc="8" Nb="1" Na="Groceries" />
+        <sub_category Nbc="8" Nb="2" Na="Fast Food" />
+        <sub_category Nbc="8" Nb="3" Na="Restaurants" />
+        <sub_category Nbc="8" Nb="4" Na="Coffee shops" />
+    </category>
+    <category Nb="9" Na="Gifts &amp; Donations" >
+        <sub_category Nbc="9" Nb="1" Na="Gift" />
+        <sub_category Nbc="9" Nb="2" Na="Charity" />
+    </category>
+    <category Nb="12" Na="Investments" >
+        <sub_category Nbc="12" Nb="1" Na="Deposit" />
+        <sub_category Nbc="12" Nb="2" Na="Withdrawal" />
+        <sub_category Nbc="12" Nb="3" Na="Dividends &amp; Cap Gains" />
+        <sub_category Nbc="12" Nb="4" Na="Buy" />
+        <sub_category Nbc="12" Nb="5" Na="Sell" />
+    </category>
+    <category Nb="13" Na="Bills &amp; Utilities" >
+        <sub_category Nbc="13" Nb="1" Na="Television" />
+        <sub_category Nbc="13" Nb="2" Na="Home Phone" />
+        <sub_category Nbc="13" Nb="3" Na="Internet" />
+        <sub_category Nbc="13" Nb="4" Na="Cellular" />
+        <sub_category Nbc="13" Nb="5" Na="Utilities" />
+    </category>
+    <category Nb="14" Na="Auto &amp; Transport" >
+        <sub_category Nbc="14" Nb="1" Na="Fuel" />
+        <sub_category Nbc="14" Nb="2" Na="Parking" />
+        <sub_category Nbc="14" Nb="3" Na="Service &amp; Auto Parts" />
+        <sub_category Nbc="14" Nb="4" Na="Lease" />
+        <sub_category Nbc="14" Nb="5" Na="Insurance" />
+    </category>
+    <category Nb="15" Na="Travel" >
+        <sub_category Nbc="15" Nb="1" Na="Air Travel" />
+        <sub_category Nbc="15" Nb="2" Na="Hotel" />
+        <sub_category Nbc="15" Nb="3" Na="Rental Car &amp; Taxi" />
+        <sub_category Nbc="15" Nb="4" Na="Vacation" />
+    </category>
+    <category Nb="16" Na="Fees &amp; Charges" >
+        <sub_category Nbc="16" Nb="1" Na="Service Fee" />
+        <sub_category Nbc="16" Nb="2" Na="Late Fee" />
+        <sub_category Nbc="16" Nb="3" Na="Finance Charge" />
+        <sub_category Nbc="16" Nb="4" Na="ATM Fee" />
+        <sub_category Nbc="16" Nb="5" Na="Bank Fee" />
+    </category>
+    <category Nb="17" Na="Taxes" >
+        <sub_category Nbc="17" Nb="1" Na="Federal Tax" />
+        <sub_category Nbc="17" Nb="2" Na="State Tax" />
+        <sub_category Nbc="17" Nb="3" Na="Local Tax" />
+        <sub_category Nbc="17" Nb="4" Na="Sales Tax" />
+        <sub_category Nbc="17" Nb="5" Na="Property Tax" />
+    </category>
+</expense_categories>

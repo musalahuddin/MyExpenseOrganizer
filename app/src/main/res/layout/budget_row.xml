@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/row_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/tv_parent_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="#D8D8D8"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/row_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/row_header"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/tv_child_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textSize="13dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:text="cat"/>
+
+        <ProgressBar
+            android:id="@+id/pb_budget_progress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_below="@id/tv_child_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/tv_budget_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_alignBottom="@id/pb_budget_progress"
+            android:layout_alignTop="@id/pb_budget_progress"
+            android:textColor="#666666"
+            android:textStyle="normal"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:text="$0.00 of $0.00"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

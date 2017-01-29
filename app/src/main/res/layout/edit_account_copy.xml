@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_edit_account"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:fillViewport="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/general_padding"
+        android:paddingLeft="@dimen/general_padding">
+
+        <!-- Account Name -->
+        <LinearLayout
+            android:id="@+id/row_account_name"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/form_label"
+                android:id="@+id/label_account_name"
+                android:text="Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                style="@style/form_input"
+                android:id="@+id/in_account_name"
+                android:hint="Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="flagNoExtractUi" />
+
+        </LinearLayout>
+
+        <!-- Account Number -->
+        <LinearLayout
+            android:id="@+id/row_account_number"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/form_label"
+                android:id="@+id/label_account_number"
+                android:text="Account # (optional)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                style="@style/form_input"
+                android:id="@+id/in_account_number"
+                android:hint="Last 4 digits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:imeOptions="flagNoExtractUi" />
+        </LinearLayout>
+
+        <!-- Account Description -->
+        <LinearLayout
+            android:id="@+id/row_account_description"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/form_label"
+                android:id="@+id/label_account_description"
+                android:text="Description (optional)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                style="@style/form_input"
+                android:id="@+id/in_account_description"
+                android:hint="Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="flagNoExtractUi" />
+        </LinearLayout>
+
+        <!-- Account Balance -->
+        <LinearLayout
+            android:id="@+id/row_account_balance"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/form_label"
+                android:id="@+id/label_account_balance"
+                android:text="Balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                style="@style/form_input"
+                android:id="@+id/in_account_balance"
+                android:hint="Initial balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal|numberSigned"
+                android:imeOptions="flagNoExtractUi" />
+        </LinearLayout>
+
+        <!-- Account Limit -->
+        <LinearLayout
+            android:id="@+id/row_account_limit"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/form_label"
+                android:id="@+id/label_account_limit"
+                android:text="Limit (optional)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                style="@style/form_input"
+                android:id="@+id/in_account_limit"
+                android:hint="Credit limit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:imeOptions="flagNoExtractUi" />
+        </LinearLayout>
+
+        <!-- Account Payment -->
+        <LinearLayout
+            android:id="@+id/row_account_payment"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/form_label"
+                android:id="@+id/label_account_payment"
+                android:text="Payment (optional)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                style="@style/form_input"
+                android:id="@+id/in_account_payment"
+                android:hint="Monthly payment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:imeOptions="flagNoExtractUi" />
+        </LinearLayout>
+
+        <!-- Account Due -->
+        <LinearLayout
+            android:id="@+id/row_account_due"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/form_label"
+                android:id="@+id/label_account_due"
+                android:text="Due date (optional)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                style="@style/form_input"
+                android:id="@+id/in_account_due"
+                android:hint="Next payment due date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:clickable="true"
+                android:editable="false" />
+        </LinearLayout>
+
+        <!-- Account Category -->
+        <LinearLayout
+            android:id="@+id/row_account_category"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/form_label"
+                android:id="@+id/label_account_category"
+                android:text="Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                style="@style/form_input"
+                android:id="@+id/in_account_category"
+                android:hint="Select category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:clickable="true"
+                android:editable="false" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>

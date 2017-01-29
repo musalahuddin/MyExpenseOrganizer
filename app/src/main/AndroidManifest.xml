@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.musalahuddin.myexpenseorganizer" >
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
+    <application
+        android:name="org.musalahuddin.myexpenseorganizer.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity android:name=".activity.Preference"/>
+
+        <activity android:name=".activity.SelectAccountCategory">
+            <intent-filter>
+                <action android:name="myexpenseorganizer.intent.manage.accountcategories"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.SelectExpenseCategory">
+            <intent-filter>
+                <action android:name="myexpenseorganizer.intent.manage.expensecategories"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.SelectTransactionCategory">
+            <intent-filter>
+                <action android:name="myexpenseorganizer.intent.manage.transactioncategories"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.EditAccount"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="myexpenseorganizer.intent.add.accounts"/>
+                <action android:name="myexpenseorganizer.intent.edit.accounts"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.SelectTransaction">
+            <intent-filter>
+                <action android:name="myexpenseorganizer.intent.select.transactions"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.EditTransaction"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            >
+            <intent-filter>
+                <action android:name="myexpenseorganizer.intent.add.transactions"/>
+                <action android:name="myexpenseorganizer.intent.edit.transactions"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.SelectAccount">
+            <intent-filter>
+                <action android:name="myexpenseorganizer.intent.select.accounts"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.EditBudget"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            >
+            <intent-filter>
+                <action android:name="myexpenseorganizer.intent.add.budgets"/>
+                <action android:name="myexpenseorganizer.intent.edit.budgets"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.FileExplorer">
+            <intent-filter>
+                <action android:name="myexpenseorganizer.intent.view.folder"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:exported="false"
+            android:name=".provider.MyExpenseOrganizerProvider"
+            android:authorities="org.musalahuddin.myexpenseorganizer" />
+    </application>
+
+</manifest>
