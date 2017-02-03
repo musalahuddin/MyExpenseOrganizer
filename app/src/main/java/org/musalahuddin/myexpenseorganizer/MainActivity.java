@@ -20,13 +20,14 @@ import android.widget.Toast;
 
 import org.musalahuddin.myexpenseorganizer.activity.Preference;
 import org.musalahuddin.myexpenseorganizer.database.MyExpenseOrganizerDatabaseHelper;
+import org.musalahuddin.myexpenseorganizer.dialog.ConfirmationDialog;
 import org.musalahuddin.myexpenseorganizer.fragment.AccountsFragment;
 import org.musalahuddin.myexpenseorganizer.fragment.BudgetsFragment;
 import org.musalahuddin.myexpenseorganizer.fragment.TransactionsFragment;
 import org.musalahuddin.myexpenseorganizer.permission.Storage;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ConfirmationDialog.ConfirmationDialogListener {
 
 
     private SQLiteDatabase db;
@@ -234,5 +235,26 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }).start();
+    }
+
+    @Override
+    public void onNegative() {
+
+    }
+
+    @Override
+    public void onPositive(int position) {
+        switch (mCurrentFragment) {
+            case ACCOUNT:
+                ((AccountsFragment)fragment).deleteAccount(position);
+                break;
+            case TRANSACTION:
+                ((TransactionsFragment)fragment).deleteTransaction(position);
+                break;
+            case BUDGET:
+                ((BudgetsFragment)fragment).deleteBudget(position);
+                break;
+        }
+        //Toast.makeText(this, String.valueOf(position), Toast.LENGTH_LONG).show();
     }
 }

@@ -30,46 +30,84 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp" />
 
-        <TextView
-            android:id="@+id/account_due"
-            android:gravity="center_vertical"
-            android:textColor="@android:color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textStyle="italic"
-            android:textSize="12dp"
-            android:layout_marginRight="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:layout_alignParentRight="true"/>
-
         <RelativeLayout
-            android:id="@+id/row_account_balance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:layout_below="@id/account_name">
-            <TextView
-                android:text="Balance"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
 
-                android:textSize="15dp"
-                android:layout_marginLeft="10dp"/>
+            <RelativeLayout
+                android:id="@+id/row_account_init_balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/account_balance"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:text="Opening Balance"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/account_init_balance"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="balance"
+                    android:textSize="14dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/row_account_balance"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="balance"
-                android:textSize="14dp"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"/>
+                android:paddingTop="5dp"
+                android:layout_below="@id/row_account_init_balance">
+                <TextView
+                    android:text="Current Balance"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/account_balance"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="balance"
+                    android:textSize="14dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/row_account_due"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:visibility="gone"
+                android:layout_below="@id/row_account_balance">
+
+                <TextView
+                    android:id="@+id/account_due"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="aga"
+                    android:textStyle="italic"
+                    android:textSize="12dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
         </RelativeLayout>
+
 
     </RelativeLayout>
 

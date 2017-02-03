@@ -59,7 +59,7 @@
             android:background="@android:color/transparent"
             android:layout_alignBottom="@id/pb_budget_progress"
             android:layout_alignTop="@id/pb_budget_progress"
-            android:textColor="#666666"
+            android:textColor="#FFFFFF"
             android:textStyle="normal"
             android:textSize="12dp"
             android:gravity="center"

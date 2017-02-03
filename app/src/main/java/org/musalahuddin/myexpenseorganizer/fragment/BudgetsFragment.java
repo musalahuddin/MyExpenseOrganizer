@@ -31,6 +31,7 @@ import org.musalahuddin.myexpenseorganizer.database.AccountTable;
 import org.musalahuddin.myexpenseorganizer.database.BudgetTable;
 import org.musalahuddin.myexpenseorganizer.database.BudgetView;
 import org.musalahuddin.myexpenseorganizer.database.TransactionView;
+import org.musalahuddin.myexpenseorganizer.dialog.ConfirmationDialog;
 import org.musalahuddin.myexpenseorganizer.serializable.Budget;
 
 import java.text.DecimalFormat;
@@ -71,6 +72,8 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
 
     private static final int EDIT= 1;
     private static final int DELETE = 2;
+
+    public ListView lv;
 
     public BudgetsFragment() {
         // Required empty public constructor
@@ -113,7 +116,7 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
 
         mLoaderManager.initLoader(ACCOUNTS, null, this);
 
-        ListView lv = (ListView) rootView.findViewById(R.id.list);
+        lv = (ListView) rootView.findViewById(R.id.list);
 
         // Create an array to specify the fields we want to display in the list
         String[] from = new String[]{BudgetView.COLUMN_SPENT};
@@ -166,14 +169,30 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
                 ProgressBar pbBudgetProgress = (ProgressBar) row.findViewById(R.id.pb_budget_progress);
 
                 // reset
-                tvParentCategory.setVisibility(View.VISIBLE);
+                //tvParentCategory.setVisibility(View.VISIBLE);
 
                 Log.i("onLoadFinished", "sql--parentCat: "+ parentCategory);
                 Log.i("onLoadFinished", "sql--prevCat: "+ prevCat);
 
+                /*
                 if(parentCategory.equals(prevCat)){
                     Log.i("onLoadFinished", "sql--equal");
                     tvParentCategory.setVisibility(View.GONE);
+                }
+                */
+
+                if(position ==0){
+                    tvParentCategory.setVisibility(View.VISIBLE);
+                }
+                else{
+                    c.moveToPosition(position-1);
+                    String prev_parent_cat = c.getString(c.getColumnIndex(BudgetView.COLUMN_EXPENSE_CATEGORY_PARENT_NAME));
+                    if(parentCategory.equals(prev_parent_cat)) {
+                        tvParentCategory.setVisibility(View.GONE);
+                    }
+                    else{
+                        tvParentCategory.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 //setting values
@@ -253,6 +272,9 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
                 Cursor cursor = mAccountsAdapter.getCursor();
                 cursor.moveToPosition(position);
 
+                mBgtIndividualAdapter.swapCursor(null);
+                lv.setAdapter(mBgtIndividualAdapter);
+
                 mAccountId = id;
                // Toast.makeText(getActivity(), "selected", Toast.LENGTH_LONG).show();
 
@@ -295,10 +317,11 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
 
             case DELETE:
 
-                cursor = mBgtIndividualAdapter.getCursor();
-                cursor.moveToPosition(position);
+                //cursor = mBgtIndividualAdapter.getCursor();
+                //cursor.moveToPosition(position);
 
-                deleteBudget(cursor);
+                //deleteBudget(cursor);
+                confirmDelete(position);
 
                // Toast.makeText(getActivity(), "delete: " + position, Toast.LENGTH_LONG).show();
 
@@ -306,6 +329,33 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
         }
 
         return false;
+    }
+
+    public void confirmDelete(int position){
+        Bundle args = new Bundle();
+        args.putString(ConfirmationDialog.KEY_TITLE, "Delete budget?");
+        args.putString(ConfirmationDialog.KEY_MESSAGE, "The selected budget will be deleted.");
+        args.putString(ConfirmationDialog.KEY_NEGATIVE_BUTTON_LABEL, "CANCEL");
+        args.putString(ConfirmationDialog.KEY_POSITIVE_BUTTON_LABEL, "DELETE");
+        args.putInt(ConfirmationDialog.KEY_POSITION, position);
+
+        ConfirmationDialog.newInstance(args)
+                .show(getFragmentManager(), "DELETE_TRANSACTION");
+
+    }
+
+    public void deleteBudget(int position) {
+
+        Cursor c = mBgtIndividualAdapter.getCursor();
+        c.moveToPosition(position);
+
+        long budgetId = c.getLong(c.getColumnIndex(AccountTable.COLUMN_ID));
+
+        boolean success = BudgetTable.delete(budgetId) != -1;
+
+        if(!success){
+            Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

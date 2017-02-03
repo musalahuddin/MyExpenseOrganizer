@@ -34,6 +34,7 @@ import org.musalahuddin.myexpenseorganizer.MyApplication;
 import org.musalahuddin.myexpenseorganizer.R;
 import org.musalahuddin.myexpenseorganizer.activity.Preference;
 import org.musalahuddin.myexpenseorganizer.database.MyExpenseOrganizerDatabaseHelper;
+import org.musalahuddin.myexpenseorganizer.dialog.ConfirmationDialog;
 import org.musalahuddin.myexpenseorganizer.fragment.AccountsFragment;
 import org.musalahuddin.myexpenseorganizer.fragment.BudgetsFragment;
 import org.musalahuddin.myexpenseorganizer.fragment.TransactionsFragment;
@@ -49,7 +50,7 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class SelectTransaction extends AppCompatActivity {
+public class SelectTransaction extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener{
 
     private long mAccountId = 0L;
 
@@ -173,4 +174,14 @@ public class SelectTransaction extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    public void onNegative() {
+
+    }
+
+    @Override
+    public void onPositive(int position) {
+        //Toast.makeText(this, String.valueOf(position), Toast.LENGTH_LONG).show();
+        ((TransactionsFragment)fragment).deleteTransaction(position);
+    }
 }

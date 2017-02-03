@@ -43,6 +43,7 @@ import org.musalahuddin.myexpenseorganizer.database.AccountTable;
 import org.musalahuddin.myexpenseorganizer.database.MyExpenseOrganizerDatabaseHelper;
 import org.musalahuddin.myexpenseorganizer.database.TransactionTable;
 import org.musalahuddin.myexpenseorganizer.database.TransactionView;
+import org.musalahuddin.myexpenseorganizer.dialog.ConfirmationDialog;
 import org.musalahuddin.myexpenseorganizer.permission.Storage;
 import org.musalahuddin.myexpenseorganizer.serializable.Transaction;
 
@@ -97,6 +98,8 @@ public class TransactionsFragment extends Fragment implements LoaderManager.Load
     public RelativeLayout mHeader;
 
     public LinearLayout mPreloader;
+
+    public ListView lv;
 
     private static final int DELETE = 1;
 
@@ -196,7 +199,7 @@ public class TransactionsFragment extends Fragment implements LoaderManager.Load
 
         }
 
-        ListView lv = (ListView) rootView.findViewById(R.id.list);
+        lv = (ListView) rootView.findViewById(R.id.list);
 
 
         // Create an array to specify the fields we want to display in the list
@@ -359,10 +362,11 @@ public class TransactionsFragment extends Fragment implements LoaderManager.Load
 
             case DELETE:
 
-                cursor = mAdapter.getCursor();
-                cursor.moveToPosition(position);
+                //cursor = mAdapter.getCursor();
+                //cursor.moveToPosition(position);
 
-                deleteTransaction(cursor);
+                //deleteTransaction(cursor);
+                confirmDelete(position);
 
                 // Toast.makeText(getActivity(), "delete: " + position, Toast.LENGTH_LONG).show();
 
@@ -371,6 +375,35 @@ public class TransactionsFragment extends Fragment implements LoaderManager.Load
 
         return false;
     }
+
+    public void confirmDelete(int position){
+        Bundle args = new Bundle();
+        args.putString(ConfirmationDialog.KEY_TITLE, "Delete transaction?");
+        args.putString(ConfirmationDialog.KEY_MESSAGE, "The selected transaction will be deleted.");
+        args.putString(ConfirmationDialog.KEY_NEGATIVE_BUTTON_LABEL, "CANCEL");
+        args.putString(ConfirmationDialog.KEY_POSITIVE_BUTTON_LABEL, "DELETE");
+        args.putInt(ConfirmationDialog.KEY_POSITION, position);
+
+        ConfirmationDialog.newInstance(args)
+                .show(getFragmentManager(), "DELETE_TRANSACTION");
+
+    }
+
+    public void deleteTransaction(int position){
+        Cursor c = mAdapter.getCursor();
+        c.moveToPosition(position);
+
+        long transactionId = c.getLong(c.getColumnIndex(TransactionView.COLUMN_ID));
+        long acountId1 =  c.getLong(c.getColumnIndex(TransactionView.COLUMN_PRIMARY_ACCOUNT_ID));
+        long acountId2 =  c.getLong(c.getColumnIndex(TransactionView.COLUMN_SECONDARY_ACCOUNT_ID));
+
+        boolean success = TransactionTable.delete(transactionId, acountId1, acountId2) != -1;
+
+        if(!success){
+            Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle arg1) {
@@ -453,6 +486,8 @@ public class TransactionsFragment extends Fragment implements LoaderManager.Load
            // Toast.makeText(getActivity(), "finished loading", Toast.LENGTH_LONG).show();
             mPreloader.setVisibility(View.GONE);
             mAdapter.swapCursor(c);
+
+
         }
         else if(id == ACCOUNTS){
             mAccountsAdapter.swapCursor(c);
@@ -475,6 +510,7 @@ public class TransactionsFragment extends Fragment implements LoaderManager.Load
         int id = loader.getId();
         // TODO Auto-generated method stub
         if(id == TRANSACTIONS){
+            //Toast.makeText(getActivity(), "reset", Toast.LENGTH_LONG).show();
             mAdapter.swapCursor(null);
         }
         else if(id == ACCOUNTS){
@@ -504,6 +540,9 @@ public class TransactionsFragment extends Fragment implements LoaderManager.Load
 
                 TextView tv_account = (TextView) view.findViewById(android.R.id.text1);
                 mAccountName = tv_account.getText().toString();
+
+                mAdapter.swapCursor(null);
+                lv.setAdapter(mAdapter);
                 /*
                 Toast.makeText(getActivity(), "name " +
                         tv_account.getText().toString(), Toast.LENGTH_LONG).show();

@@ -37,6 +37,7 @@ import org.musalahuddin.myexpenseorganizer.adapter.AccountAdapter;
 import org.musalahuddin.myexpenseorganizer.database.AccountCategoryTable;
 import org.musalahuddin.myexpenseorganizer.database.AccountTable;
 import org.musalahuddin.myexpenseorganizer.database.AccountView;
+import org.musalahuddin.myexpenseorganizer.dialog.ConfirmationDialog;
 import org.musalahuddin.myexpenseorganizer.dialog.ListDialog;
 import org.musalahuddin.myexpenseorganizer.serializable.Account;
 import org.w3c.dom.Text;
@@ -110,15 +111,43 @@ public class AccountsFragment extends Fragment implements LoaderManager.LoaderCa
 
             case DELETE:
 
-                cursor = mAdapter.getCursor();
-                cursor.moveToPosition(position);
+                //cursor = mAdapter.getCursor();
+                //cursor.moveToPosition(position);
 
-                deleteAccount(cursor);
+                //deleteAccount(cursor);
+                confirmDelete(position);
                 //Toast.makeText(getActivity(), "delete: " + position, Toast.LENGTH_LONG).show();
                 break;
         }
 
         return false;
+    }
+
+    public void confirmDelete(int position){
+        Bundle args = new Bundle();
+        args.putString(ConfirmationDialog.KEY_TITLE, "Delete account?");
+        args.putString(ConfirmationDialog.KEY_MESSAGE, "The selected account will be deleted.");
+        args.putString(ConfirmationDialog.KEY_NEGATIVE_BUTTON_LABEL, "CANCEL");
+        args.putString(ConfirmationDialog.KEY_POSITIVE_BUTTON_LABEL, "DELETE");
+        args.putInt(ConfirmationDialog.KEY_POSITION, position);
+
+        ConfirmationDialog.newInstance(args)
+                .show(getFragmentManager(), "DELETE_TRANSACTION");
+
+    }
+
+    public void deleteAccount(int position){
+
+        Cursor c = mAdapter.getCursor();
+        c.moveToPosition(position);
+
+        long accountId = c.getLong(c.getColumnIndex(AccountTable.COLUMN_ID));
+
+        boolean success = AccountTable.delete(accountId) != -1;
+
+        if(!success){
+            Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

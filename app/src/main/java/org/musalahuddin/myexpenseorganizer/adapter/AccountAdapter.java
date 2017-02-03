@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,9 +77,11 @@ public class AccountAdapter extends CursorRecyclerAdapter<AccountAdapter.Account
 
         protected TextView tvAccountName;
         protected TextView tvAccountBalance;
+        protected TextView tvAccountInitBalance;
         protected TextView tvAccountPayment;
         protected TextView tvAccountLimit;
         protected TextView tvAccountDue;
+        protected RelativeLayout rowAccountDue;
 
 
         public AccountViewHolder(View v) {
@@ -86,6 +89,9 @@ public class AccountAdapter extends CursorRecyclerAdapter<AccountAdapter.Account
             tvAccountName =  (TextView) v.findViewById(R.id.account_name);
             tvAccountBalance = (TextView)  v.findViewById(R.id.account_balance);
             tvAccountDue = (TextView)  v.findViewById(R.id.account_due);
+            tvAccountInitBalance = (TextView) v.findViewById(R.id.account_init_balance);
+            rowAccountDue = (RelativeLayout) v.findViewById(R.id.row_account_due);
+
             v.setOnClickListener(this);
            // v.setOnLongClickListener(this);
             v.setOnCreateContextMenuListener(this);
@@ -136,29 +142,42 @@ public class AccountAdapter extends CursorRecyclerAdapter<AccountAdapter.Account
 
         //get cursor values
         String name = c.getString(c.getColumnIndex(AccountTable.COLUMN_NAME));
-        //int number = c.getInt(c.getColumnIndex(AccountTable.COLUMN_NUMBER));
+        int number = c.getInt(c.getColumnIndex(AccountTable.COLUMN_NUMBER));
         double balance = c.getDouble(c.getColumnIndex(AccountTable.COLUMN_CURR_BALANCE))/100;
+        double init_balance = c.getDouble(c.getColumnIndex(AccountTable.COLUMN_INIT_BALANCE))/100;
         long due_date = c.getLong(c.getColumnIndex(AccountTable.COLUMN_DUE_DATE));
 
         //set name
-        /*
+
         if(number > 0){
             name = name+"(...."+number+")";
         }
-        */
 
         holder.tvAccountName.setText(name);
+
+        //set current balance
+        if(init_balance < 0){
+            //holder.tvAccountBalance.setText("-$"+f.format(Math.abs(balance)));
+            holder.tvAccountInitBalance.setText("(-"+n.format(Math.abs(init_balance))+")");
+            //holder.tvAccountBalance.setTextColor(Color.RED);
+            //holder.tvAccountInitBalance.setTextColor(Color.parseColor("#d30202"));
+        }
+        else{
+            //holder.tvAccountBalance.setText("$"+f.format(Math.abs(balance)));
+            holder.tvAccountInitBalance.setText("("+n.format(Math.abs(init_balance))+")");
+            //holder.tvAccountInitBalance.setTextColor(Color.DKGRAY);
+        }
 
         //set balance
         if(balance < 0){
             //holder.tvAccountBalance.setText("-$"+f.format(Math.abs(balance)));
-            holder.tvAccountBalance.setText("-"+n.format(Math.abs(balance)));
+            holder.tvAccountBalance.setText("-"+n.format(Math.abs(balance))+" ");
             //holder.tvAccountBalance.setTextColor(Color.RED);
             holder.tvAccountBalance.setTextColor(Color.parseColor("#d30202"));
         }
         else{
             //holder.tvAccountBalance.setText("$"+f.format(Math.abs(balance)));
-            holder.tvAccountBalance.setText(n.format(Math.abs(balance)));
+            holder.tvAccountBalance.setText(n.format(Math.abs(balance))+" ");
             holder.tvAccountBalance.setTextColor(Color.DKGRAY);
         }
         /*
@@ -184,6 +203,7 @@ public class AccountAdapter extends CursorRecyclerAdapter<AccountAdapter.Account
 
         //set due date
         if(due_date != 0L){
+            holder.rowAccountDue.setVisibility(View.VISIBLE);
             if(due_date < System.currentTimeMillis()){
                 Calendar cal = Calendar.getInstance();
                 Calendar curr = Calendar.getInstance();
@@ -206,9 +226,10 @@ public class AccountAdapter extends CursorRecyclerAdapter<AccountAdapter.Account
                 due_date = cal.getTimeInMillis();
                 */
             }
-            holder.tvAccountDue.setText(mTitleDateFormat.format(due_date));
+            holder.tvAccountDue.setText("Due: " + mTitleDateFormat.format(due_date));
         }
         else{
+            holder.rowAccountDue.setVisibility(View.GONE);
             holder.tvAccountDue.setText("");
         }
 
