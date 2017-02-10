@@ -9,7 +9,8 @@ import java.util.Locale;
 import org.musalahuddin.myexpenseorganizer.R;
 import org.musalahuddin.myexpenseorganizer.database.AccountTable;
 import org.musalahuddin.myexpenseorganizer.database.AccountView;
-import org.musalahuddin.myexpenseorganizer.dialog.MultipleChoiceDialog;
+//import org.musalahuddin.myexpenseorganizer.dialog.MultipleChoiceDialog;
+import org.musalahuddin.myexpenseorganizer.dialog.SingleChoiceDialog;
 import org.musalahuddin.myexpenseorganizer.serializable.Account;
 import org.musalahuddin.myexpenseorganizer.util.Utils;
 
@@ -43,10 +44,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-public class EditAccount extends AppCompatActivity implements View.OnClickListener,MultipleChoiceDialog.MultipleChoiceDialogListener{
+public class EditAccount extends AppCompatActivity implements View.OnClickListener,SingleChoiceDialog.SingleChoiceDialogListener {
 
     private static final int SELECT_CATEGORY_REQUEST = 1;
     private static final int SELECT_FIELD_REQUEST = 2;
+
+    private static final int BUDGET= 3;
+    private static final int DUE = 4;
+
+    private int mDialogCode;
 
     private long mAccountId = 0L;
 
@@ -54,6 +60,9 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
     private long mAccountDueDate = 0L;
     private String mAccountCatName;
     private Calendar mCalendar = Calendar.getInstance();
+
+
+    private Long mBudgetStartDay = 1L;
 
     //fields
     private TextView mAccountNameText;
@@ -67,6 +76,7 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
     private Button mAddFieldButton;
     private ScrollView mContainer;
     private Switch mSwitch;
+    private EditText mETAccountBudgetDay;
 
     //rows
     private TableRow mAccountNameRow;
@@ -159,10 +169,12 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
         //mAddFieldButton = (Button) findViewById(R.id.add_field);
         mContainer = (ScrollView) findViewById(R.id.container_edit_account);
         mSwitch = (Switch) findViewById(R.id.mySwitch);
+        mETAccountBudgetDay = (EditText) findViewById(R.id.in_account_budget_day);
 
 
         mAccountCatButton.setOnClickListener(this);
         mAccountDueButton.setOnClickListener(this);
+        mETAccountBudgetDay.setOnClickListener(this);
        // mAddFieldButton.setOnClickListener(this);
 
 
@@ -183,8 +195,12 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
             mAccountId = account.id;
             mAccountCatId = account.accoutCategoryId;
             mAccountDueDate = account.due;
-            if(mAccountDueDate != 0L) mCalendar.setTimeInMillis(mAccountDueDate);
+            if(mAccountDueDate != 0L && mAccountDueDate > 31){
+                mCalendar.setTimeInMillis(mAccountDueDate);
+                mAccountDueDate = mCalendar.get(Calendar.DAY_OF_MONTH);
+            }
 
+            mBudgetStartDay = account.budget_start_day;
 
             //populate fields
             mAccountNameText.setText(account.name);
@@ -194,12 +210,20 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
             if(account.limit != 0) mAccountLimitText.setText(f.format(account.limit/100).toString());
             if(account.payment != 0) mAccountPayText.setText(f.format(account.payment/100).toString());
             mAccountCatButton.setText(account.accountCategoryName);
-            if(mAccountDueDate != 0L) mAccountDueButton.setText(mTitleDateFormat.format(mCalendar.getTime()));
+            if(mAccountDueDate != 0L) {
+                //mAccountDueButton.setText(mTitleDateFormat.format(mCalendar.getTime()));
+                mAccountDueButton.setText(String.valueOf(mAccountDueDate)+suffix(mAccountDueDate)+" of the Month");
+            }
+
+
 
             //hide balance field when editing account
             LinearLayout balance_row = (LinearLayout) findViewById(R.id.row_account_balance);
             balance_row.setVisibility(View.GONE);
         }
+
+
+        mETAccountBudgetDay.setText(String.valueOf(mBudgetStartDay)+suffix(mBudgetStartDay)+" of the Month");
     }
 
     /*
@@ -246,7 +270,11 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
                 startSelectAccountCategory();
                 break;
             case R.id.in_account_due:
-                showDialog(DIALOG_DATE);
+                //showDialog(DIALOG_DATE);
+                startSelectBudgetDay(DUE);
+                break;
+            case R.id.in_account_budget_day:
+                startSelectBudgetDay(BUDGET);
                 break;
             /*
             case R.id.add_field:
@@ -283,6 +311,31 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
                 );
         }
         return null;
+    }
+
+    protected void startSelectBudgetDay(int code){
+        mDialogCode = code;
+        String tag;
+        //Toast.makeText(this, String.valueOf(mBudgetStartDay), Toast.LENGTH_LONG).show();
+        Bundle args = new Bundle();
+        args.putString(SingleChoiceDialog.KEY_TITLE, "Select a day of the Month");
+        args.putString(SingleChoiceDialog.KEY_NEGATIVE_BUTTON_LABEL, "CANCEL");
+        args.putString(SingleChoiceDialog.KEY_POSITIVE_BUTTON_LABEL, "OK");
+        //args.putInt(SingleChoiceDialog.KEY_CHOICES, R.array.days_of_month);
+        if(code == BUDGET) {
+            args.putLong(SingleChoiceDialog.KEY_DAY, mBudgetStartDay);
+            tag = "DUE_DAY";
+        }
+        else {
+            args.putLong(SingleChoiceDialog.KEY_DAY, mAccountDueDate);
+            tag = "BUDGET_DAY";
+        }
+        //args.putInt(SingleChoiceDialog.KEY_DAY, 6);
+
+        SingleChoiceDialog.newInstance(args)
+                .show(getSupportFragmentManager(), tag);
+
+
     }
 
     @Override
@@ -390,6 +443,7 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
         double pay = parseDouble(mAccountPayText.getText().toString());
         long due = mAccountDueDate;
         long catId  = mAccountCatId;
+        long bstartDay = mBudgetStartDay;
 
         if(!mSwitch.isChecked()){
             balance = balance * -1;
@@ -399,10 +453,10 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
         Log.i("due date is ",String.valueOf(due));
 
         if(mAccountId != 0L){
-            success = AccountTable.update(mAccountId, name, number, description, limit, pay, due, catId) != -1;
+            success = AccountTable.update(mAccountId, name, number, description, limit, pay, due, bstartDay, catId) != -1;
         }
         else{
-            success = AccountTable.create(name, number, description, balance, limit, pay, due, catId) != -1;
+            success = AccountTable.create(name, number, description, balance, limit, pay, due, bstartDay, catId) != -1;
         }
 
         if(!success){
@@ -443,62 +497,6 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
         return number;
     }
 
-    protected void selectFields(){
-
-        //TableRow[] fieldRows;
-        //String[] fieldLabels;
-
-
-        ArrayList<String> tempLables = new ArrayList<String>();
-        ArrayList<Integer> tempIds = new ArrayList<Integer>();
-        //ArrayList<Boolean> tempChecks = new ArrayList<Boolean>();
-
-        TableRow row;
-
-        for(Field field: fields){
-            row = (TableRow) findViewById(field.getFieldId());
-            if(row.getVisibility() == View.GONE){
-                //System.out.println(field.getFieldLabel());
-                tempIds.add(field.getFieldId());
-                tempLables.add(field.getFieldLabel());
-            }
-        }
-        // dynamically sizing arrays
-        int size = tempIds.size();
-
-        fieldIds = tempIds.toArray(new Integer[size]);
-        String[] fieldLabels = tempLables.toArray(new String[size]);
-
-
-		/*
-		for(String label: fieldLabels){
-			System.out.println("label is: " + label);
-		}
-
-		for(boolean check: fieldChecks){
-			System.out.println("check is: " + check);
-		}
-
-
-		showDialog(DIALOG_FIELDS);
-		*/
-
-        Bundle b = new Bundle();
-        b.putString("title", "Add another field");
-        b.putStringArray("fieldLabels",fieldLabels);
-
-		/*
-		Intent i = new Intent(this,AddField.class);
-		i.putExtras(b);
-	    //startActivity(i);
-	    startActivityForResult(i,SELECT_FIELD_REQUEST);
-	    */
-
-        MultipleChoiceDialog.newInstance(b).show(getSupportFragmentManager(), "ADD_FIELD");
-
-    }
-
-
     protected void displayFields(Bundle bundle){
         boolean[] fieldChecks = bundle.getBooleanArray("fieldChecks");
         TableRow row;
@@ -534,17 +532,7 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
         */
     }
 
-    @Override
-    public void multipleChoicePositiveClick(Bundle args) {
-        Bundle b = args;
-        displayFields(b);
-        checkFields();
-    }
 
-    @Override
-    public void multipleChoiceNegativeClick() {
-
-    }
 
     private void hideKeyboard() {
         //Utils.hideSoftInputForViews(this, mAccountNameText);
@@ -563,5 +551,48 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
         mAccountNameText.setFocusable(true);
 	}
 	*/
+
+
+    @Override
+    public void onSingleChoiceNegative() {
+
+    }
+
+    @Override
+    public void onSingleChoicePositive(int day) {
+
+        //TextView et = (mDialogCode == BUDGET) ? mETAccountBudgetDay : mAccountDueButton;
+        if(mDialogCode == BUDGET){
+            mBudgetStartDay = Long.valueOf(day);
+            mETAccountBudgetDay.setText(String.valueOf(mBudgetStartDay)+suffix(mBudgetStartDay)+" of the Month");
+        }
+        else{
+            mAccountDueDate = Long.valueOf(day);
+            mAccountDueButton.setText(String.valueOf(mAccountDueDate)+suffix(mAccountDueDate)+" of the Month");
+        }
+
+        //et.setText(String.valueOf(mBudgetStartDay)+suffix(mBudgetStartDay)+" of the Month");
+
+    }
+
+
+
+    public String suffix(long num){
+        String suffix = "";
+        if(num == 1 || num == 21 || num == 31) {
+            suffix = "st";
+        }
+        else if(num == 2 || num == 22){
+            suffix = "nd";
+        }
+        else if(num == 3 || num == 23){
+            suffix = "rd";
+        }
+        else{
+            suffix = "th";
+        }
+
+        return suffix;
+    }
 
 }

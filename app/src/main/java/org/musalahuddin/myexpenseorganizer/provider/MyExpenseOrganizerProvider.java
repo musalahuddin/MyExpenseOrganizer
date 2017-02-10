@@ -47,6 +47,7 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
     private static final int VIEW_BUDGETS_INDIVIDUAL = 21;
     private static final int TRANSACTIONS_ID3 = 22;
     private static final int TRANSACTIONS_ACCOUNTS_ID3 = 23;
+    private static final int TRANSACTIONS_ACCOUNTS_ID4 = 24;
 
 
     // Authority
@@ -93,7 +94,8 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
         URI_MATCHER.addURI(AUTHORITY, "transactions_accounts", TRANSACTIONS_ACCOUNTS);
         //URI_MATCHER.addURI(AUTHORITY, "transactions_accounts/#", TRANSACTIONS_ACCOUNTS_ID);
         URI_MATCHER.addURI(AUTHORITY, "transactions_accounts/#/#", TRANSACTIONS_ACCOUNTS_ID2);
-        URI_MATCHER.addURI(AUTHORITY, "transactions_accounts/#/#/#/#", TRANSACTIONS_ACCOUNTS_ID3);
+        URI_MATCHER.addURI(AUTHORITY, "transactions_accounts/#/#/#", TRANSACTIONS_ACCOUNTS_ID3);
+        URI_MATCHER.addURI(AUTHORITY, "transactions_accounts/#/#/#/#", TRANSACTIONS_ACCOUNTS_ID4);
         URI_MATCHER.addURI(AUTHORITY, "view_transactions", VIEW_TRANSACTIONS);
         URI_MATCHER.addURI(AUTHORITY, "budgets", BUDGETS);
         URI_MATCHER.addURI(AUTHORITY, "budgets/#", BUDGETS_ID);
@@ -392,6 +394,7 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
                 getContext().getContentResolver().notifyChange(VIEW_TRANSACTIONS_URI, null);
                 newUri = TRANSACTIONS_ACCOUNTS + "/" + id;
 
+                /*
                 if(id != -1){
                     Cursor c = db.rawQuery("Select primary_account_id from transactions_accounts Where _id=?", new String[] {String.valueOf(id)});
                     if(c.moveToNext()){
@@ -403,6 +406,7 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
                     c.close();
 
                 }
+                */
 
 
                 break;
@@ -675,9 +679,10 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
                 String tran_id = uri.getPathSegments().get(1);
                 String act_id = uri.getPathSegments().get(2);
                 String is_deposit = uri.getPathSegments().get(3);
-                String orig_act_id = uri.getPathSegments().get(4);
+                //String orig_act_id = uri.getPathSegments().get(4);
 
                 selection = TransactionAccountTable.COLUMN_TRANSACTION_ID + " = " +  tran_id;
+                //selection += " AND " + TransactionAccountTable.COLUMN_PRIMARY_ACCOUNT_ID + " = " +  act_id;
                 selection += " AND " + TransactionAccountTable.COLUMN_IS_DEPOSIT + " = " +  is_deposit;
                 selectionArgs = null;
 
@@ -687,10 +692,64 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
 
                 count = db.update(TransactionAccountTable.TABLE_TRANSACTION_ACCOUNT, values, selection, selectionArgs);
 
-                transactionAccountTrigger(Integer.parseInt(act_id),db);
-                if(act_id != orig_act_id) transactionAccountTrigger(Integer.parseInt(orig_act_id),db);
+                //debug **
+                /*
+                mCursor = db.rawQuery("SELECT COALESCE(SUM(amount),0) AS total FROM transactions_accounts "
+                                       + " INNER JOIN transactions ON transactions_accounts.transaction_id = transactions._id "
+                        + "WHERE transactions_accounts.primary_account_id = "+act_id+" AND transactions.deleted != 1 ", null);
+
+                if(mCursor.moveToFirst())
+                {
+                    Log.w("mCursor",mCursor.getString(0));
+                }
+                */
+                /*
+                mCursor = db.rawQuery("SELECT transaction_id, primary_account_id, secondary_account_id, amount FROM transactions_accounts", null);
+                String str;
+               // Log.w("mCursor",String.valueOf(mCursor.getCount()));
+
+                if (mCursor.getCount() > 0)
+                {
+                    mCursor.moveToFirst();
+                    do {
+                        str = mCursor.getString(0);
+                        str += "," + mCursor.getString(1);
+                        str += "," + mCursor.getString(2);
+                       str += "," + mCursor.getString(3);
+                        Log.w("mCursor",str);
+                    } while (mCursor.moveToNext());
+                }
+
+                */
+                //debug **
+
+                /*
+                Log.w("mIsDeposit",is_deposit);
+
+                //if(is_deposit=="1") {
+                    transactionAccountTrigger(Integer.parseInt(act_id), db);
+                    //if(act_id != orig_act_id) transactionAccountTrigger(Integer.parseInt(orig_act_id),db);
+                //}
+                */
 
                 //notify the accounts view uri
+                getContext().getContentResolver().notifyChange(VIEW_TRANSACTIONS_URI, null);
+                getContext().getContentResolver().notifyChange(VIEW_BUDGETS_URI, null);
+
+                break;
+
+            case TRANSACTIONS_ACCOUNTS_ID4:
+                String orig_primary_account_id = uri.getPathSegments().get(1);
+                String primary_account_id = uri.getPathSegments().get(2);
+                String orig_seondary_account_id = uri.getPathSegments().get(3);
+                String secondary_account_id = uri.getPathSegments().get(4);
+
+                transactionAccountTrigger(Integer.parseInt(primary_account_id), db);
+                if(primary_account_id != orig_primary_account_id) transactionAccountTrigger(Integer.parseInt(orig_primary_account_id), db);
+
+                transactionAccountTrigger(Integer.parseInt(secondary_account_id), db);
+                if(secondary_account_id != orig_seondary_account_id) transactionAccountTrigger(Integer.parseInt(orig_seondary_account_id), db);
+
                 getContext().getContentResolver().notifyChange(VIEW_TRANSACTIONS_URI, null);
                 getContext().getContentResolver().notifyChange(VIEW_BUDGETS_URI, null);
 
@@ -717,6 +776,14 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
                         + "WHERE primary_account_id = "+accountId+") "
                         + "WHERE _id = "+accountId);
         */
+
+        String q = "UPDATE accounts SET current_balance = initial_balance +"
+                + "(SELECT COALESCE(SUM(amount),0) AS total FROM transactions_accounts "
+                + " INNER JOIN transactions ON transactions_accounts.transaction_id = transactions._id "
+                + "WHERE transactions_accounts.primary_account_id = "+accountId+" AND transactions.deleted != 1) "
+                + "WHERE _id = "+accountId;
+
+        Log.w("transaction trigger", q);
 
         db.execSQL(
                 "UPDATE accounts SET current_balance = initial_balance +"

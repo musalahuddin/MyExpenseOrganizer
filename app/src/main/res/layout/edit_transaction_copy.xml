@@ -26,9 +26,87 @@
             android:paddingRight="@dimen/general_padding"
             android:paddingLeft="@dimen/general_padding">
 
-            <!-- Account -->
+            <!-- From  -->
             <LinearLayout
-                android:id="@+id/row_transaction_account"
+                android:id="@+id/row_transaction_from"
+                android:visibility="visible"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/row_vertical_padding"
+                android:paddingBottom="@dimen/row_vertical_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/form_label"
+                    android:id="@+id/label_transaction_from"
+                    android:text="From"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <Spinner style="@style/form_input"
+                        android:id="@+id/spinner_transaction_from"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"/>
+
+                    <!-- Button
+                        android:id="@+id/in_transaction_from_account"
+                          android:visibility="visible"
+                          android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_alignBottom="@+id/spinner_transaction_from"
+                         android:layout_toRightOf="@+id/spinner_transaction_from"
+                         android:layout_alignParentTop="true"
+                          android:hint="Select from accounts"
+                         style="?android:attr/spinnerStyle" /-->
+
+                    <!--Spinner
+                        style="@style/form_input"
+                        android:id="@+id/in_transaction_from_account"
+                        android:visibility="visible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/spinner_transaction_from"
+                        android:layout_toRightOf="@+id/spinner_transaction_from"
+                        android:layout_toEndOf="@+id/spinner_transaction_from"
+                        android:layout_alignParentTop="true"
+                        android:hint="Select from accounts"/-->
+
+                    <EditText style="@style/form_input"
+                        android:id="@+id/in_transaction_from_account"
+                        android:visibility="visible"
+                        android:hint="Select Account"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/spinner_transaction_from"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:clickable="true"
+                        android:editable="false"/>
+
+                    <EditText style="@style/form_input"
+                        android:id="@+id/in_transaction_from_other"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/spinner_transaction_from"
+                        android:layout_toEndOf="@+id/spinner_transaction_from"
+                        android:layout_alignParentTop="true"
+                        android:inputType="text"
+                        android:hint="Type here"
+                        android:imeOptions="flagNoExtractUi|actionDone" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!-- To  -->
+            <LinearLayout
+                android:id="@+id/row_transaction_to"
                 android:visibility="visible"
                 android:orientation="vertical"
                 android:paddingTop="@dimen/row_vertical_padding"
@@ -37,23 +115,73 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
-                <TextView
-                    style="@style/form_label"
-                    android:id="@+id/label_transaction_account"
-                    android:text="Account"
+                <TextView style="@style/form_label"
+                    android:id="@+id/label_transaction_to"
+                    android:text="To"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <EditText style="@style/form_input"
-                    android:id="@+id/in_transaction_account"
-                    android:hint="Select account"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:clickable="true"
-                    android:editable="false"/>
+                    android:layout_height="match_parent" >
 
+                    <Spinner style="@style/form_input"
+                        android:id="@+id/spinner_transaction_to"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:hint="some_hint"/>
+
+                    <!-- Button
+                        android:id="@+id/in_transaction_to_account"
+                        android:visibility="visible"
+                          android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_alignBottom="@+id/spinner_transaction_to"
+                         android:layout_toRightOf="@+id/spinner_transaction_to"
+                         android:layout_alignParentTop="true"
+                          android:hint="Select from accounts"
+                         style="?android:attr/spinnerStyle" /-->
+
+                    <!--Spinner
+                        style="@style/form_input"
+                        android:id="@+id/in_transaction_to_account"
+                        android:visibility="visible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/spinner_transaction_to"
+                        android:layout_toRightOf="@+id/spinner_transaction_to"
+                        android:layout_toEndOf="@+id/spinner_transaction_to"
+                        android:layout_alignParentTop="true"
+                        android:hint="Select from accounts" /-->
+
+                    <EditText style="@style/form_input"
+                        android:id="@+id/in_transaction_to_account"
+                        android:visibility="visible"
+                        android:hint="Select Account"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/spinner_transaction_to"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:clickable="true"
+                        android:editable="false"/>
+
+                    <EditText
+                        style="@style/form_input"
+                        android:id="@+id/in_transaction_to_other"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/spinner_transaction_to"
+                        android:layout_toEndOf="@+id/spinner_transaction_to"
+                        android:layout_alignParentTop="true"
+                        android:inputType="text"
+                        android:hint="Type here"
+                        android:imeOptions="flagNoExtractUi|actionDone" />
+                </RelativeLayout>
             </LinearLayout>
 
             <!-- Amount -->
@@ -70,128 +198,18 @@
                 <TextView
                     style="@style/form_label"
                     android:id="@+id/label_transaction_amount"
-                    android:text="Amount($)"
+                    android:text="Amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:tools="http://schemas.android.com/tools"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <Switch
-                            android:id="@+id/mySwitch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:showText="true"
-                            android:textOn="+"
-                            android:textOff="-"/>
-
-                        <EditText
-                            style="@style/form_input"
-                            android:id="@+id/in_transaction_amount"
-                            android:hint="Amount"
-                            android:layout_toRightOf="@+id/mySwitch"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:imeOptions="flagNoExtractUi" />
-                    </RelativeLayout>
-
-            </LinearLayout>
-
-            <!-- Payee  -->
-            <LinearLayout
-                android:id="@+id/row_transaction_payee"
-                android:visibility="visible"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/row_vertical_padding"
-                android:paddingBottom="@dimen/row_vertical_padding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <TextView style="@style/form_label"
-                    android:id="@+id/label_transaction_payee"
-                    android:text="Payee"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                    <Spinner style="@style/form_input"
-                        android:id="@+id/spinner_transaction_payee"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:hint="some_hint"/>
-
-                    <EditText style="@style/form_input"
-                        android:id="@+id/in_transaction_payee_account"
-                        android:visibility="visible"
-                        android:hint="Select Account"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/spinner_transaction_payee"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:clickable="true"
-                        android:editable="false"/>
-
-                    <EditText
-                        style="@style/form_input"
-                        android:id="@+id/in_transaction_payee_other"
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/spinner_transaction_payee"
-                        android:layout_toEndOf="@+id/spinner_transaction_payee"
-                        android:layout_alignParentTop="true"
-                        android:inputType="text"
-                        android:hint="Type here"
-                        android:imeOptions="flagNoExtractUi|actionDone" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <!-- Category -->
-            <LinearLayout
-                android:id="@+id/row_transaction_category"
-                android:visibility="visible"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/row_vertical_padding"
-                android:paddingBottom="@dimen/row_vertical_padding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    style="@style/form_label"
-                    android:id="@+id/label_transaction_category"
-                    android:text="Category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <!-- Button
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/in_transaction_category"
-                  android:hint="Select category"
-                  style="?android:attr/spinnerStyle" /-->
-
-                <EditText style="@style/form_input"
-                    android:id="@+id/in_transaction_category"
-                    android:hint="Select category"
+                <EditText
+                    style="@style/form_input"
+                    android:id="@+id/in_transaction_amount"
+                    android:hint="Amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:clickable="true"
-                    android:editable="false"/>
+                    android:inputType="numberDecimal"
+                    android:imeOptions="flagNoExtractUi" />
 
             </LinearLayout>
 
@@ -241,6 +259,43 @@
                         android:layout_toLeftOf="@+id/image_transaction_camera"
                         android:imeOptions="flagNoExtractUi" />
                 </RelativeLayout>
+
+            </LinearLayout>
+
+            <!-- Category -->
+            <LinearLayout
+                android:id="@+id/row_transaction_category"
+                android:visibility="visible"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/row_vertical_padding"
+                android:paddingBottom="@dimen/row_vertical_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    style="@style/form_label"
+                    android:id="@+id/label_transaction_category"
+                    android:text="Category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!-- Button
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/in_transaction_category"
+                  android:hint="Select category"
+                  style="?android:attr/spinnerStyle" /-->
+
+                <EditText style="@style/form_input"
+                    android:id="@+id/in_transaction_category"
+                    android:hint="Select category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:editable="false"/>
 
             </LinearLayout>
 

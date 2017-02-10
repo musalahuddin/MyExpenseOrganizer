@@ -176,6 +176,7 @@ public class AccountsFragment extends Fragment implements LoaderManager.LoaderCa
                 AccountTable.COLUMN_CREDIT_LIMIT,
                 AccountTable.COLUMN_MONTHLY_PAYMENT,
                 AccountTable.COLUMN_DUE_DATE,
+                AccountTable.COLUMN_BUDGET_START_DAY,
                 AccountView.COLUMN_ACCOUNT_CATEGORY_ID,
                 AccountView.COLUMN_ACCOUNT_CATEGORY_NAME,
                 };
@@ -236,11 +237,13 @@ public class AccountsFragment extends Fragment implements LoaderManager.LoaderCa
         Account account = new Account();
         account.id = c.getLong(c.getColumnIndex(AccountTable.COLUMN_ID));
         account.name = c.getString(c.getColumnIndex(AccountTable.COLUMN_NAME));
+        account.number = c.getInt(c.getColumnIndex(AccountTable.COLUMN_NUMBER));
         account.description = c.getString(c.getColumnIndex(AccountTable.COLUMN_DESCRIPTION));
         account.balance = c.getDouble(c.getColumnIndex(AccountTable.COLUMN_CURR_BALANCE));
         account.limit = c.getDouble(c.getColumnIndex(AccountTable.COLUMN_CREDIT_LIMIT));
         account.payment = c.getDouble(c.getColumnIndex(AccountTable.COLUMN_MONTHLY_PAYMENT));
         account.due = c.getLong(c.getColumnIndex(AccountTable.COLUMN_DUE_DATE));
+        account.budget_start_day = c.getLong(c.getColumnIndex(AccountTable.COLUMN_BUDGET_START_DAY));
         account.accoutCategoryId = c.getLong(c.getColumnIndex(AccountView.COLUMN_ACCOUNT_CATEGORY_ID));
         account.accountCategoryName = c.getString(c.getColumnIndex(AccountView.COLUMN_ACCOUNT_CATEGORY_NAME));
 

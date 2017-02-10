@@ -85,6 +85,7 @@ public class AccountTable extends Model{
             double credit_limit,
             double monthly_payment,
             long due_date,
+            long budget_start_day,
             long account_category_id
     ){
 
@@ -101,6 +102,7 @@ public class AccountTable extends Model{
         initialValues.put(COLUMN_CREDIT_LIMIT, (int)credit_limit);
         initialValues.put(COLUMN_MONTHLY_PAYMENT, (int)monthly_payment);
         initialValues.put(COLUMN_DUE_DATE, due_date);
+        initialValues.put(COLUMN_BUDGET_START_DAY, budget_start_day);
         initialValues.put(COLUMN_ACCOUNT_CATEGORY_ID, account_category_id);
         Uri uri;
         try{
@@ -128,6 +130,7 @@ public class AccountTable extends Model{
             double credit_limit,
             double monthly_payment,
             long due_date,
+            long budget_start_day,
             long account_category_id
     ){
 
@@ -144,6 +147,7 @@ public class AccountTable extends Model{
         args.put(COLUMN_CREDIT_LIMIT, (int)credit_limit);
         args.put(COLUMN_MONTHLY_PAYMENT, (int)monthly_payment);
         args.put(COLUMN_DUE_DATE, due_date);
+        args.put(COLUMN_BUDGET_START_DAY, budget_start_day);
         args.put(COLUMN_ACCOUNT_CATEGORY_ID, account_category_id);
         Uri uri;
         try{

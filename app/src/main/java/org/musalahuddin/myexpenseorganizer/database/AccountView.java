@@ -30,6 +30,7 @@ public class AccountView extends Model {
             +  AccountTable.TABLE_ACCOUNT+"."+AccountTable.COLUMN_CREDIT_LIMIT +", "
             +  AccountTable.TABLE_ACCOUNT+"."+AccountTable.COLUMN_MONTHLY_PAYMENT +", "
             +  AccountTable.TABLE_ACCOUNT+"."+AccountTable.COLUMN_DUE_DATE +", "
+            +  AccountTable.TABLE_ACCOUNT+"."+AccountTable.COLUMN_BUDGET_START_DAY +", "
             +  AccountTable.TABLE_ACCOUNT+"."+AccountTable.COLUMN_CREATE_DATE +", "
             +  AccountTable.TABLE_ACCOUNT+"."+AccountTable.COLUMN_MOD_DATE +", "
             +  AccountTable.TABLE_ACCOUNT+"."+AccountTable.COLUMN_DELETE_DATE +", "

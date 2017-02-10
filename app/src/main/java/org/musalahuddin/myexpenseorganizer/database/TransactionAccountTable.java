@@ -177,11 +177,33 @@ public class TransactionAccountTable extends Model{
         Uri uri;
         try{
 
-            return cr().update(CONTENT_URI.buildUpon().appendPath(String.valueOf(transaction_id)).appendPath(String.valueOf(account_id1)).appendPath(String.valueOf(is_deposit)).appendPath(String.valueOf(orig_account_id)).build(),
+            /*return cr().update(CONTENT_URI.buildUpon().appendPath(String.valueOf(transaction_id)).appendPath(String.valueOf(account_id1)).appendPath(String.valueOf(is_deposit)).appendPath(String.valueOf(orig_account_id)).build(),
+                    args, null, null);*/
+
+            return cr().update(CONTENT_URI.buildUpon().appendPath(String.valueOf(transaction_id)).appendPath(String.valueOf(account_id1)).appendPath(String.valueOf(is_deposit)).build(),
                     args, null, null);
         }
         catch (SQLiteConstraintException e){
             return -1;
         }
     }
+
+    public static int trigger(
+            long orig_primary_account_id,
+            long primary_account_id,
+            long orig_seondary_account_id,
+            long secondary_account_id
+    ){
+
+        Uri uri;
+        try{
+
+            return cr().update(CONTENT_URI.buildUpon().appendPath(String.valueOf(orig_primary_account_id)).appendPath(String.valueOf(primary_account_id)).appendPath(String.valueOf(orig_seondary_account_id)).appendPath(String.valueOf(secondary_account_id)).build(),
+                    null, null, null);
+        }
+        catch (SQLiteConstraintException e){
+            return -1;
+        }
+    }
+
 }

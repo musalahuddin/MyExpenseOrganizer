@@ -150,7 +150,7 @@ public class AccountAdapter extends CursorRecyclerAdapter<AccountAdapter.Account
         //set name
 
         if(number > 0){
-            name = name+"(...."+number+")";
+            name = name+" (...."+number+")";
         }
 
         holder.tvAccountName.setText(name);
@@ -158,26 +158,26 @@ public class AccountAdapter extends CursorRecyclerAdapter<AccountAdapter.Account
         //set current balance
         if(init_balance < 0){
             //holder.tvAccountBalance.setText("-$"+f.format(Math.abs(balance)));
-            holder.tvAccountInitBalance.setText("(-"+n.format(Math.abs(init_balance))+")");
+            holder.tvAccountInitBalance.setText("-"+n.format(Math.abs(init_balance)));
             //holder.tvAccountBalance.setTextColor(Color.RED);
             //holder.tvAccountInitBalance.setTextColor(Color.parseColor("#d30202"));
         }
         else{
             //holder.tvAccountBalance.setText("$"+f.format(Math.abs(balance)));
-            holder.tvAccountInitBalance.setText("("+n.format(Math.abs(init_balance))+")");
+            holder.tvAccountInitBalance.setText(n.format(Math.abs(init_balance)));
             //holder.tvAccountInitBalance.setTextColor(Color.DKGRAY);
         }
 
         //set balance
         if(balance < 0){
             //holder.tvAccountBalance.setText("-$"+f.format(Math.abs(balance)));
-            holder.tvAccountBalance.setText("-"+n.format(Math.abs(balance))+" ");
+            holder.tvAccountBalance.setText("-"+n.format(Math.abs(balance)));
             //holder.tvAccountBalance.setTextColor(Color.RED);
             holder.tvAccountBalance.setTextColor(Color.parseColor("#d30202"));
         }
         else{
             //holder.tvAccountBalance.setText("$"+f.format(Math.abs(balance)));
-            holder.tvAccountBalance.setText(n.format(Math.abs(balance))+" ");
+            holder.tvAccountBalance.setText(n.format(Math.abs(balance)));
             holder.tvAccountBalance.setTextColor(Color.DKGRAY);
         }
         /*
@@ -204,28 +204,38 @@ public class AccountAdapter extends CursorRecyclerAdapter<AccountAdapter.Account
         //set due date
         if(due_date != 0L){
             holder.rowAccountDue.setVisibility(View.VISIBLE);
-            if(due_date < System.currentTimeMillis()){
+            if(due_date < 32){
                 Calendar cal = Calendar.getInstance();
-                Calendar curr = Calendar.getInstance();
+                cal.setTimeInMillis(System.currentTimeMillis());
+                //cal.set(Calendar.DAY_OF_MONTH, (int) due_date);
 
-                cal.setTimeInMillis(due_date);
-                curr.setTimeInMillis(System.currentTimeMillis());
+                cal.set(Calendar.DAY_OF_MONTH, Math.min((int) due_date, cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
 
-                //curr.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+                due_date = cal.getTimeInMillis();
+            }
+            if (due_date < System.currentTimeMillis()) {
+                    Calendar cal = Calendar.getInstance();
+                    Calendar curr = Calendar.getInstance();
 
-                curr.set(Calendar.DAY_OF_MONTH, Math.min(cal.get(Calendar.DAY_OF_MONTH), curr.getActualMaximum(Calendar.DAY_OF_MONTH)));
+                    cal.setTimeInMillis(due_date);
+                    curr.setTimeInMillis(System.currentTimeMillis());
 
-                if (curr.getTimeInMillis() < System.currentTimeMillis()){
-                    curr.add(Calendar.MONTH, 1);
-                }
+                    //curr.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
 
-                due_date = curr.getTimeInMillis();
+                    curr.set(Calendar.DAY_OF_MONTH, Math.min(cal.get(Calendar.DAY_OF_MONTH), curr.getActualMaximum(Calendar.DAY_OF_MONTH)));
+
+                    if (curr.getTimeInMillis() < System.currentTimeMillis()) {
+                        curr.add(Calendar.MONTH, 1);
+                    }
+
+                    due_date = curr.getTimeInMillis();
                 /*
                 cal.setTimeInMillis(due_date);
                 cal.add(Calendar.MONTH, 1);
                 due_date = cal.getTimeInMillis();
                 */
             }
+
             holder.tvAccountDue.setText("Due: " + mTitleDateFormat.format(due_date));
         }
         else{

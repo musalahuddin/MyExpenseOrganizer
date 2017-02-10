@@ -32,6 +32,7 @@ import android.text.TextUtils;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.Menu;
@@ -48,6 +49,7 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -98,10 +100,10 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
     private Uri mTransactionImageUri = null;
 
 
-    private Spinner mSpTransactionFrom, mSpTransactionTo;
+    private Spinner mSpTransactionPayee;
     private Spinner mSpTransactionFromAccount, mSpTransactionToAccount;
-    private EditText mBtnTransactionFromAccount, mBtnTransactionToAccount;
-    private EditText mEtTransactionFromOther, mEtTransactionToOther;
+    private EditText mBtnTransactionAccount, mBtnTransactionPayeeAccount;
+    private EditText mEtTransactionPayeeOther;
     private EditText mEtTransactionAmount;
     private EditText mEtTransactionNotes;
     private ImageButton mImgBtnTransactionCamera;
@@ -109,6 +111,8 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
     private EditText mBtnTransactionCategory;
     private EditText mBtnTransactionType;
     private ScrollView mContainer;
+    private Switch mSwitch;
+    private TextView mPayeeLabel;
 
     private SimpleCursorAdapter mAccountsAdapter;
 
@@ -170,21 +174,38 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
 
         cameraButton = getDefaultCameraButton();
 
-        mSpTransactionFrom = (Spinner) findViewById(R.id.spinner_transaction_from);
-        mBtnTransactionFromAccount = (EditText) findViewById(R.id.in_transaction_from_account);
-        mEtTransactionFromOther = (EditText) findViewById(R.id.in_transaction_from_other);
-        mSpTransactionTo = (Spinner) findViewById(R.id.spinner_transaction_to);
-        mBtnTransactionToAccount = (EditText) findViewById(R.id.in_transaction_to_account);
+        //mSpTransactionFrom = (Spinner) findViewById(R.id.spinner_transaction_from);
+        mBtnTransactionAccount = (EditText) findViewById(R.id.in_transaction_account);
+        //mEtTransactionFromOther = (EditText) findViewById(R.id.in_transaction_from_other);
+        mSpTransactionPayee = (Spinner) findViewById(R.id.spinner_transaction_payee);
+        mBtnTransactionPayeeAccount = (EditText) findViewById(R.id.in_transaction_payee_account);
         mEtTransactionAmount = (EditText) findViewById(R.id.in_transaction_amount);
         mEtTransactionNotes = (EditText) findViewById(R.id.in_transaction_notes);
-        mEtTransactionToOther = (EditText) findViewById(R.id.in_transaction_to_other);
+        mEtTransactionPayeeOther = (EditText) findViewById(R.id.in_transaction_payee_other);
         mImgBtnTransactionCamera = (ImageButton) findViewById(R.id.image_transaction_camera);
         mBtnTransactionDate = (EditText) findViewById(R.id.in_transaction_date);
         mBtnTransactionTime = (EditText) findViewById(R.id.in_transaction_time);
         mBtnTransactionCategory = (EditText) findViewById(R.id.in_transaction_category);
         mBtnTransactionType = (EditText) findViewById(R.id.in_transaction_type);
         mContainer = (ScrollView) findViewById(R.id.container_edit_transaction);
+        mSwitch = (Switch) findViewById(R.id.mySwitch);
+        mPayeeLabel = (TextView) findViewById(R.id.label_transaction_payee);
 
+
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+
+                if(isChecked){
+                    mPayeeLabel.setText("Payer");
+                }else{
+                    mPayeeLabel.setText("Payee");
+                }
+
+            }
+        });
 
 
         //upon orientation change stored in instance state, since new splitTransactions are immediately persisted to DB
@@ -227,8 +248,8 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
         mAccountsAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, null, new String[] {AccountTable.COLUMN_NAME}, new int[] {android.R.id.text1}, 0);
         mAccountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        mSpTransactionFrom.setAdapter(adapter);
-        mSpTransactionTo.setAdapter(adapter);
+        //mSpTransactionFrom.setAdapter(adapter);
+        mSpTransactionPayee.setAdapter(adapter);
         //mSpTransactionFromAccount.setAdapter(mAccountsAdapter);
         //mSpTransactionToAccount.setAdapter(mAccountsAdapter);
 
@@ -237,16 +258,16 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
         //mSpTransactionToAccount.setOnItemSelectedListener(this);
 
         //this setup goes second to ovoid mPrimaryAccountId and mPrimaryAccountId overwrites
-        mSpTransactionFrom.setOnItemSelectedListener(this);
-        mSpTransactionTo.setOnItemSelectedListener(this);
+        //mSpTransactionFrom.setOnItemSelectedListener(this);
+        mSpTransactionPayee.setOnItemSelectedListener(this);
 
         mImgBtnTransactionCamera.setOnClickListener(this);
         mBtnTransactionDate.setOnClickListener(this);
         mBtnTransactionTime.setOnClickListener(this);
         mBtnTransactionCategory.setOnClickListener(this);
         mBtnTransactionType.setOnClickListener(this);
-        mBtnTransactionFromAccount.setOnClickListener(this);
-        mBtnTransactionToAccount.setOnClickListener(this);
+        mBtnTransactionAccount.setOnClickListener(this);
+        mBtnTransactionPayeeAccount.setOnClickListener(this);
 
         if(extras != null){
             Transaction transaction = (Transaction) extras.getSerializable("mtransaction");
@@ -270,17 +291,24 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
                 mTransactionCatName = transaction.transactionCategoryName;
                 mTransactionImagePath = transaction.imagePath;
                 //Log.i("mPrimaryAccountId: ",String.valueOf(mPrimaryAccountId));
+
+                int isDeposit = transaction.isDeposit;
+                if(isDeposit == 1){
+                    mSwitch.setChecked(true);
+                }
             }
-            /*
+
             else{
                 mPrimaryAccountId = extras.getLong("primaryAccountId");
                 mPrimaryAccountName = extras.getString("primaryAccountName");
 
-                Toast.makeText(this, "primary Account :"+String.valueOf(mPrimaryAccountId), Toast.LENGTH_LONG).show();
-                mBtnTransactionFromAccount.setText(mPrimaryAccountName);
+                //Toast.makeText(this, "primary Account :"+String.valueOf(mPrimaryAccountId), Toast.LENGTH_LONG).show();
+
 
             }
-            */
+
+            mBtnTransactionAccount.setText(mPrimaryAccountName);
+
         }
 
 
@@ -303,8 +331,10 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
 
             if(mPrimaryAccountId == 1L){
                 //Log.i("matching","secondaryId");
-                mSpTransactionFrom.setSelection(1);
-                mEtTransactionFromOther.setText(mPrimaryAccountDescription);
+
+                //mSpTransactionFrom.setSelection(1);
+                //mEtTransactionFromOther.setText(mPrimaryAccountDescription);
+
                 //mSpTransactionFrom.setEnabled(false);
                // mEtTransactionFromOther.setEnabled(false);
             }
@@ -315,8 +345,8 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
 
             if(mSecondaryAccountId == 1L){
                 //Log.i("matching","secondaryId");
-                mSpTransactionTo.setSelection(1);
-                mEtTransactionToOther.setText(mSecondaryAccountDescription);
+                mSpTransactionPayee.setSelection(1);
+                mEtTransactionPayeeOther.setText(mSecondaryAccountDescription);
                 //mSpTransactionTo.setEnabled(false);
                 //mEtTransactionToOther.setEnabled(false);
             }
@@ -432,7 +462,7 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
        // Log.i("saveState mSecondaryAccountId:", String.valueOf(mSecondaryAccountId));
 
 
-
+        /*
         if(mPrimaryAccountId == 1L) {
             String payee = mEtTransactionFromOther.getText().toString();
             if (TextUtils.isEmpty(payee.trim())) {
@@ -441,18 +471,19 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
                 return false;
             }
         }
+        */
 
         if(mSecondaryAccountId == 0L){
             //Toast.makeText(this, "Please select date", Toast.LENGTH_LONG).show();
-            mBtnTransactionToAccount.setError("Please select Account");
+            mBtnTransactionPayeeAccount.setError("Please select Account");
             return false;
         }
 
         if(mSecondaryAccountId == 1L) {
-            String payee = mEtTransactionToOther.getText().toString();
+            String payee = mEtTransactionPayeeOther.getText().toString();
             if (TextUtils.isEmpty(payee.trim())) {
                 //Toast.makeText(this, "Please enter amount", Toast.LENGTH_LONG).show();
-                mEtTransactionToOther.setError("Please enter payee");
+                mEtTransactionPayeeOther.setError("Please enter payee");
                 return false;
             }
         }
@@ -505,8 +536,8 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
 
         long transactionId = 0L;
         boolean success;
-        String transactionFromOther = mEtTransactionFromOther.getText().toString();
-        String transactionToOther = mEtTransactionToOther.getText().toString();
+        //String transactionFromOther = mEtTransactionFromOther.getText().toString();
+        String transactionPayeeOther = mEtTransactionPayeeOther.getText().toString();
         double transactionAmount = Math.abs(parseDouble(mEtTransactionAmount.getText().toString()));
         String transactionNotes = mEtTransactionNotes.getText().toString();
 
@@ -515,17 +546,22 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
             //Toast.makeText(this, mTransactionImagePath, Toast.LENGTH_LONG).show();
             //TransactionAccountTable.update(mTransactionId, transactionAmount);
 
-            /*
-            //withdraw
-            TransactionAccountTable.update(mTransactionId, mPrimaryAccountId, -transactionAmount);
-            //deposit
-            TransactionAccountTable.update(mTransactionId, mSecondaryAccountId, transactionAmount);
-            */
+            if(!mSwitch.isChecked()){
+                //withdraw
+                TransactionAccountTable.update(mTransactionId, mOrigPrimaryAccountId, mPrimaryAccountId, mSecondaryAccountId,"", transactionPayeeOther, -transactionAmount, 0);
+                //deposit
+                TransactionAccountTable.update(mTransactionId, mOrigSecondaryAccountId, mSecondaryAccountId, mPrimaryAccountId, transactionPayeeOther, "", transactionAmount, 1);
 
-            //withdraw
-            TransactionAccountTable.update(mTransactionId, mOrigPrimaryAccountId, mPrimaryAccountId, mSecondaryAccountId,transactionFromOther, transactionToOther, -transactionAmount, 0);
-            //deposit
-            TransactionAccountTable.update(mTransactionId, mOrigSecondaryAccountId, mSecondaryAccountId, mPrimaryAccountId, transactionToOther, transactionFromOther, transactionAmount, 1);
+            }
+            else{
+                //withdraw
+                TransactionAccountTable.update(mTransactionId, mOrigSecondaryAccountId, mSecondaryAccountId, mPrimaryAccountId, transactionPayeeOther, "", -transactionAmount, 0);
+                //deposit
+                TransactionAccountTable.update(mTransactionId, mOrigPrimaryAccountId, mPrimaryAccountId, mSecondaryAccountId,"", transactionPayeeOther, transactionAmount, 1);
+
+            }
+
+
         }
         else{
             transactionId = TransactionTable.create(mTransactionCatId,mExpenseCatId,transactionNotes,transactionNotes,mTransactionImagePath,mTransactionDateTime);
@@ -535,14 +571,23 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
                 Toast.makeText(this, "error", Toast.LENGTH_LONG).show();
             }
             else{
-                //withdraw
-                TransactionAccountTable.create(transactionId, mPrimaryAccountId, mSecondaryAccountId, transactionFromOther, transactionToOther, -transactionAmount, 0);
-                //deposit
-                TransactionAccountTable.create(transactionId, mSecondaryAccountId, mPrimaryAccountId, transactionToOther, transactionFromOther, transactionAmount, 1);
+                if(!mSwitch.isChecked()) {
+                    //withdraw
+                    TransactionAccountTable.create(transactionId, mPrimaryAccountId, mSecondaryAccountId, "", transactionPayeeOther, -transactionAmount, 0);
+                    //deposit
+                    TransactionAccountTable.create(transactionId, mSecondaryAccountId, mPrimaryAccountId, transactionPayeeOther, "", transactionAmount, 1);
+                }
+                else{
+                    //deposit
+                    TransactionAccountTable.create(transactionId, mPrimaryAccountId, mSecondaryAccountId, "", transactionPayeeOther, transactionAmount, 1);
+                    //withdraw
+                    TransactionAccountTable.create(transactionId, mSecondaryAccountId, mPrimaryAccountId, transactionPayeeOther, "", -transactionAmount, 0);
+                }
+
             }
         }
 
-
+        TransactionAccountTable.trigger(mOrigPrimaryAccountId,mPrimaryAccountId,mOrigSecondaryAccountId,mSecondaryAccountId);
 
         finish();
 
@@ -642,12 +687,12 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
                 startSelectTransactionCategory();
                 break;
 
-            case R.id.in_transaction_from_account:
+            case R.id.in_transaction_account:
                 //Toast.makeText(this, "From Account", Toast.LENGTH_SHORT).show();
                 startSelectFromAccount();
                 break;
 
-            case R.id.in_transaction_to_account:
+            case R.id.in_transaction_payee_account:
                 //Toast.makeText(this, "To Account", Toast.LENGTH_SHORT).show();
                 startSelectToAccount();
                 break;
@@ -793,7 +838,7 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
             if (intent != null) {
                 //Toast.makeText(this, intent.getStringExtra("account_name") , Toast.LENGTH_SHORT).show();
                 mPrimaryAccountId = intent.getLongExtra("account_id",0);
-                mBtnTransactionFromAccount.setText(intent.getStringExtra("account_name"));
+                mBtnTransactionAccount.setText(intent.getStringExtra("account_name"));
             }
         }
         else if(requestCode == SELECT_TO_ACCOUNT_REQUEST){
@@ -801,7 +846,7 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
             if (intent != null) {
                 //Toast.makeText(this, intent.getStringExtra("account_name") , Toast.LENGTH_SHORT).show();
                 mSecondaryAccountId = intent.getLongExtra("account_id",0);
-                mBtnTransactionToAccount.setText(intent.getStringExtra("account_name"));
+                mBtnTransactionPayeeAccount.setText(intent.getStringExtra("account_name"));
             }
         }
         else{
@@ -881,58 +926,11 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
                                long id) {
         switch(parent.getId()) {
 
-            case R.id.spinner_transaction_from:
+            case R.id.spinner_transaction_payee:
                 if(position == 0){
-                    mEtTransactionFromOther.setText("");
-                    mEtTransactionFromOther.setVisibility(View.GONE);
-                    mBtnTransactionFromAccount.setVisibility(View.VISIBLE);
-                    //mSpTransactionFromAccount.setSelection(0);
-                    if(extras != null) {
-                        Transaction transaction = (Transaction) extras.getSerializable("mtransaction");
-
-                        if(transaction != null && transaction.primaryAccountId != 1 && transaction.primaryAccountId != mSecondaryAccountId) {
-
-                                mPrimaryAccountId = transaction.primaryAccountId;
-                                mPrimaryAccountName = transaction.primaryAccountName;
-
-                        }
-                        else {
-                            if(mSecondaryAccountId != extras.getLong("primaryAccountId")) {
-                                mPrimaryAccountId = extras.getLong("primaryAccountId");
-                                mPrimaryAccountName = extras.getString("primaryAccountName");
-                            }
-                            else{
-                                mPrimaryAccountId = 0L;
-                                mPrimaryAccountName = "";
-                            }
-                        }
-                    }
-                    else {
-                        mPrimaryAccountId = 0L;//mSpTransactionFromAccount.getSelectedItemId(); // force to point to selected id
-                        mPrimaryAccountName = "";
-                    }
-
-                    mBtnTransactionFromAccount.setText(mPrimaryAccountName);
-                }
-                else{
-                    mBtnTransactionFromAccount.setVisibility(View.GONE);
-                    mEtTransactionFromOther.setVisibility(View.VISIBLE);
-                    //mEtTransactionFromOther.setText("");
-                    if(mFromCount>0)
-                    mEtTransactionFromOther.requestFocus();
-                    mFromCount++;
-                    mPrimaryAccountId = 1L; // default to "other" account
-                }
-
-
-
-                break;
-
-            case R.id.spinner_transaction_to:
-                if(position == 0){
-                    mEtTransactionToOther.setText("");
-                    mEtTransactionToOther.setVisibility(View.GONE);
-                    mBtnTransactionToAccount.setVisibility(View.VISIBLE);
+                    mEtTransactionPayeeOther.setText("");
+                    mEtTransactionPayeeOther.setVisibility(View.GONE);
+                    mBtnTransactionPayeeAccount.setVisibility(View.VISIBLE);
                     //mSpTransactionToAccount.setSelection(0);
                     if(extras != null) {
                         Transaction transaction = (Transaction) extras.getSerializable("mtransaction");
@@ -950,31 +948,31 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
                         mSecondaryAccountId = 0L;
                         mSecondaryAccountName = "";
                     }
-                    mBtnTransactionToAccount.setText(mSecondaryAccountName);
+                    mBtnTransactionPayeeAccount.setText(mSecondaryAccountName);
                     // Log.i("secondary Id is set here 2: ", String.valueOf(mSecondaryAccountId) );
                 }
                 else{
-                    mBtnTransactionToAccount.setVisibility(View.GONE);
-                    mEtTransactionToOther.setVisibility(View.VISIBLE);
+                    mBtnTransactionPayeeAccount.setVisibility(View.GONE);
+                    mEtTransactionPayeeOther.setVisibility(View.VISIBLE);
                     //mEtTransactionToOther.setText("");
                     if(mToCount>0)
-                    mEtTransactionToOther.requestFocus();
+                    mEtTransactionPayeeOther.requestFocus();
                     mToCount++;
                     mSecondaryAccountId = 1L; // default to "other" account
                    // Log.i("secondary Id is set here 3: ", String.valueOf(mSecondaryAccountId) );
                 }
                 break;
 
-            case R.id.in_transaction_from_account:
+            case R.id.in_transaction_account:
                 //Toast.makeText(EditTransaction.this,String.valueOf(id), Toast.LENGTH_LONG).show();
-                if(mBtnTransactionFromAccount.getVisibility() != View.GONE){
+                if(mBtnTransactionAccount.getVisibility() != View.GONE){
                     mPrimaryAccountId = id;
                 }
                 break;
 
-            case R.id.in_transaction_to_account:
+            case R.id.in_transaction_payee_account:
                 //Toast.makeText(EditTransaction.this,String.valueOf(id), Toast.LENGTH_LONG).show();
-                if(mBtnTransactionToAccount.getVisibility() != View.GONE){
+                if(mBtnTransactionPayeeAccount.getVisibility() != View.GONE){
                     mSecondaryAccountId = id;
                     //Log.i("secondary Id is set here 4: ", String.valueOf(mSecondaryAccountId)+String.valueOf(mSpTransactionToAccount.getVisibility()) );
                 }

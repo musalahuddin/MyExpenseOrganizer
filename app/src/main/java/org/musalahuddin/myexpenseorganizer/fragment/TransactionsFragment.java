@@ -152,6 +152,8 @@ public class TransactionsFragment extends Fragment implements LoaderManager.Load
         };
 
         if(!mShowAccounts){
+            mHeader.setVisibility(View.VISIBLE);
+
             TextView tvAccount = (TextView) rootView.findViewById(R.id.tv_account);
             tvAccount.setVisibility(View.VISIBLE);
 
@@ -566,14 +568,15 @@ public class TransactionsFragment extends Fragment implements LoaderManager.Load
         int isDeposit = c.getInt(c.getColumnIndex(TransactionView.COLUMN_IS_DEPOSIT));
 
         transaction.id = c.getLong(c.getColumnIndex(TransactionView.COLUMN_ID));
-        if(isDeposit == 0){
+        //if(isDeposit == 0){
             transaction.primaryAccountId = c.getLong(c.getColumnIndex(TransactionView.COLUMN_PRIMARY_ACCOUNT_ID));
             transaction.primaryAccountName = mAccountName;
             transaction.primaryAccountDescription = c.getString(c.getColumnIndex(TransactionView.COLUMN_PRIMARY_ACCOUNT_DESCRIPTION));
             transaction.secondaryAccountId = c.getLong(c.getColumnIndex(TransactionView.COLUMN_SECONDARY_ACCOUNT_ID));
             transaction.secondaryAccountName = c.getString(c.getColumnIndex(TransactionView.COLUMN_SECONDARY_ACCOUNT_NAME));
             transaction.secondaryAccountDescription = c.getString(c.getColumnIndex(TransactionView.COLUMN_SECONDARY_ACCOUNT_DESCRIPTION));
-        }
+        //}
+        /*
         else{
             transaction.primaryAccountId = c.getLong(c.getColumnIndex(TransactionView.COLUMN_SECONDARY_ACCOUNT_ID));
             transaction.primaryAccountName = c.getString(c.getColumnIndex(TransactionView.COLUMN_SECONDARY_ACCOUNT_NAME));
@@ -582,6 +585,7 @@ public class TransactionsFragment extends Fragment implements LoaderManager.Load
             transaction.secondaryAccountName = mAccountName;
             transaction.secondaryAccountDescription = c.getString(c.getColumnIndex(TransactionView.COLUMN_PRIMARY_ACCOUNT_DESCRIPTION));
         }
+        */
         transaction.amount = c.getDouble(c.getColumnIndex(TransactionView.COLUMN_AMOUNT));
         transaction.isDeposit = c.getInt(c.getColumnIndex(TransactionView.COLUMN_IS_DEPOSIT));
         transaction.date = c.getLong(c.getColumnIndex(TransactionView.COLUMN_TRANSACTION_DATE));

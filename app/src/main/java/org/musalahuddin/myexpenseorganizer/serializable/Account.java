@@ -17,6 +17,7 @@ public class Account implements Serializable {
     public double payment;
     public String description;
     public long due;
+    public long budget_start_day;
     public long accoutCategoryId;
     public String accountCategoryName;
 

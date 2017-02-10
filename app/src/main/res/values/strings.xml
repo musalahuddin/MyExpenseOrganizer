@@ -70,4 +70,38 @@
         <item >citi preffered</item>
         <item >capital one</item>
     </string-array>
+
+    <string-array name="days_of_month">
+        <item>1st of the Month</item>
+        <item>2nd of the Month</item>
+        <item>3rd of the Month</item>
+        <item>4th of the Month</item>
+        <item>5th of the Month</item>
+        <item>6th of the Month</item>
+        <item>7th of the Month</item>
+        <item>8th of the Month</item>
+        <item>9th of the Month</item>
+        <item>10th of the Month</item>
+        <item>11th of the Month</item>
+        <item>12th of the Month</item>
+        <item>13th of the Month</item>
+        <item>14th of the Month</item>
+        <item>15th of the Month</item>
+        <item>16th of the Month</item>
+        <item>17th of the Month</item>
+        <item>18th of the Month</item>
+        <item>19th of the Month</item>
+        <item>20th of the Month</item>
+        <item>21st of the Month</item>
+        <item>22nd of the Month</item>
+        <item>23rd of the Month</item>
+        <item>24th of the Month</item>
+        <item>25th of the Month</item>
+        <item>26th of the Month</item>
+        <item>27th of the Month</item>
+        <item>28th of the Month</item>
+        <item>29th of the Month</item>
+        <item>30th of the Month</item>
+        <item>31st of the Month</item>
+    </string-array>
 </resources>
