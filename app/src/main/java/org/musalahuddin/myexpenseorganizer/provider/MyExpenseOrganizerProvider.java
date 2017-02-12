@@ -48,6 +48,7 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
     private static final int TRANSACTIONS_ID3 = 22;
     private static final int TRANSACTIONS_ACCOUNTS_ID3 = 23;
     private static final int TRANSACTIONS_ACCOUNTS_ID4 = 24;
+    private static final int PAYEES = 25;
 
 
     // Authority
@@ -74,6 +75,8 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
             Uri.parse("content://" + AUTHORITY + "/budgets");
     public static final Uri VIEW_BUDGETS_URI =
             Uri.parse("content://" + AUTHORITY + "/view_budgets");
+    public static final Uri PAYEES_URI =
+            Uri.parse("content://" + AUTHORITY + "/payees");
 
     static {
         URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
@@ -101,6 +104,7 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
         URI_MATCHER.addURI(AUTHORITY, "budgets/#", BUDGETS_ID);
         URI_MATCHER.addURI(AUTHORITY, "view_budgets", VIEW_BUDGETS_OVERALL);
         URI_MATCHER.addURI(AUTHORITY, "view_budgets/#", VIEW_BUDGETS_INDIVIDUAL);
+        URI_MATCHER.addURI(AUTHORITY, "payees", PAYEES);
     }
 
     @Override
@@ -266,12 +270,19 @@ public class MyExpenseOrganizerProvider extends ContentProvider{
 
                 Log.i("im here", "sql--"+sql);
                 break;
+            case PAYEES:
+                sql = " SELECT Min(_id) as _id, secondary_account_description FROM transactions_accounts " +
+                        " WHERE secondary_account_description LIKE '"+selectionArgs[0]+"%' " +
+                        " GROUP BY secondary_account_description ORDER BY secondary_account_description ASC";
+
+                c = db.rawQuery(sql, null);
+                break;
 
             default:
                 throw new IllegalArgumentException("Unknown URL " + uri);
         }
 
-        if(uriMatcher != VIEW_BUDGETS_OVERALL && uriMatcher != VIEW_BUDGETS_INDIVIDUAL){
+        if(uriMatcher != VIEW_BUDGETS_OVERALL && uriMatcher != VIEW_BUDGETS_INDIVIDUAL && uriMatcher != PAYEES){
             if (!TextUtils.isEmpty(sortOrder)) {
                 orderBy = sortOrder;
             }

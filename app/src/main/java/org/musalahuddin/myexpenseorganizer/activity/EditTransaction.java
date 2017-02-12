@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.musalahuddin.myexpenseorganizer.MyApplication;
 import org.musalahuddin.myexpenseorganizer.R;
 import org.musalahuddin.myexpenseorganizer.camera.CameraModule;
 import org.musalahuddin.myexpenseorganizer.camera.CameraModule.CameraResultCallback;
@@ -13,8 +14,10 @@ import org.musalahuddin.myexpenseorganizer.database.AccountTable;
 import org.musalahuddin.myexpenseorganizer.database.TransactionAccountTable;
 import org.musalahuddin.myexpenseorganizer.database.TransactionTable;
 import org.musalahuddin.myexpenseorganizer.permission.Storage;
+import org.musalahuddin.myexpenseorganizer.provider.MyExpenseOrganizerProvider;
 import org.musalahuddin.myexpenseorganizer.serializable.Transaction;
 
+import android.annotation.SuppressLint;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,11 +31,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
+import android.widget.FilterQueryProvider;
 import android.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.Menu;
@@ -103,7 +109,7 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
     private Spinner mSpTransactionPayee;
     private Spinner mSpTransactionFromAccount, mSpTransactionToAccount;
     private EditText mBtnTransactionAccount, mBtnTransactionPayeeAccount;
-    private EditText mEtTransactionPayeeOther;
+    private AutoCompleteTextView mEtTransactionPayeeOther;
     private EditText mEtTransactionAmount;
     private EditText mEtTransactionNotes;
     private ImageButton mImgBtnTransactionCamera;
@@ -115,6 +121,8 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
     private TextView mPayeeLabel;
 
     private SimpleCursorAdapter mAccountsAdapter;
+
+    private SimpleCursorAdapter mPayeesAdapter;
 
     public int mFromCount = 0;
     public int mToCount = 0;
@@ -181,7 +189,7 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
         mBtnTransactionPayeeAccount = (EditText) findViewById(R.id.in_transaction_payee_account);
         mEtTransactionAmount = (EditText) findViewById(R.id.in_transaction_amount);
         mEtTransactionNotes = (EditText) findViewById(R.id.in_transaction_notes);
-        mEtTransactionPayeeOther = (EditText) findViewById(R.id.in_transaction_payee_other);
+        mEtTransactionPayeeOther = (AutoCompleteTextView) findViewById(R.id.in_transaction_payee_other);
         mImgBtnTransactionCamera = (ImageButton) findViewById(R.id.image_transaction_camera);
         mBtnTransactionDate = (EditText) findViewById(R.id.in_transaction_date);
         mBtnTransactionTime = (EditText) findViewById(R.id.in_transaction_time);
@@ -190,6 +198,40 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
         mContainer = (ScrollView) findViewById(R.id.container_edit_transaction);
         mSwitch = (Switch) findViewById(R.id.mySwitch);
         mPayeeLabel = (TextView) findViewById(R.id.label_transaction_payee);
+
+        mPayeesAdapter = new SimpleCursorAdapter(this, R.layout.support_simple_spinner_dropdown_item, null,
+                new String[]{TransactionAccountTable.COLUMN_SECONDARY_ACCOUNT_DESCRIPTION},
+                new int[]{android.R.id.text1},
+                0);
+
+        mEtTransactionPayeeOther.setAdapter(mPayeesAdapter);
+        mPayeesAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence str) {
+
+               // Log.w("payee1", str.toString());
+
+                if (str == null) {
+                    return null;
+                }
+
+                //Log.w("payee2", str.toString());
+                //return null;
+
+                return MyApplication.getInstance().getContentResolver().query(
+                        MyExpenseOrganizerProvider.PAYEES_URI,
+                        null, null ,new String[]{str.toString()}, null);
+
+            }
+        });
+
+        mPayeesAdapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
+            public CharSequence convertToString(Cursor cur) {
+                //return cur.getString(1);
+                return cur.getString(cur.getColumnIndex(TransactionAccountTable.COLUMN_SECONDARY_ACCOUNT_DESCRIPTION));
+            }
+        });
+
 
 
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -954,6 +996,9 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
                 else{
                     mBtnTransactionPayeeAccount.setVisibility(View.GONE);
                     mEtTransactionPayeeOther.setVisibility(View.VISIBLE);
+
+                    mEtTransactionPayeeOther.setThreshold(1);
+                    mEtTransactionPayeeOther.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                     //mEtTransactionToOther.setText("");
                     if(mToCount>0)
                     mEtTransactionPayeeOther.requestFocus();

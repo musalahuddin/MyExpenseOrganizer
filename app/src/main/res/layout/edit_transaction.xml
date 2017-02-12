@@ -143,18 +143,18 @@
                         android:clickable="true"
                         android:editable="false"/>
 
-                    <EditText
+                    <AutoCompleteTextView
                         style="@style/form_input"
                         android:id="@+id/in_transaction_payee_other"
                         android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:completionThreshold="1"
                         android:layout_toRightOf="@+id/spinner_transaction_payee"
                         android:layout_toEndOf="@+id/spinner_transaction_payee"
                         android:layout_alignParentTop="true"
-                        android:inputType="text"
-                        android:hint="Type here"
-                        android:imeOptions="flagNoExtractUi|actionDone" />
+                        android:inputType="textPersonName"
+                        android:hint="Type here" />
                 </RelativeLayout>
             </LinearLayout>
 
