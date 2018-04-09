@@ -4,16 +4,16 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/row_transaction_date"
+        android:id="@+id/row_account_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
         <TextView
-            android:id="@+id/transaction_date"
+            android:id="@+id/account_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:text="date"
+            android:text="category"
             android:gravity="center_vertical|center_horizontal"
             android:textSize="13dp"
             android:textStyle="bold"
@@ -24,20 +24,20 @@
 
 
     <RelativeLayout
-        android:id="@+id/row_transaction_amount"
+        android:id="@+id/row_curr_balance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/row_transaction_date"
+        android:layout_below="@id/row_account_category"
         >
 
         <TextView
-            android:id="@+id/transaction_amount"
+            android:id="@+id/curr_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:gravity="center_vertical"
-            android:text="Amount"
+            android:text="current balance"
             android:textSize="13dp"
             android:textStyle="normal"
             android:paddingTop="7dp"
@@ -46,44 +46,36 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/row_transaction_type"
+        android:id="@+id/row_account_due"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/row_transaction_amount">
-        <!--TextView
-            android:id="@+id/transaction_type"
-            android:text="Type"
-            android:gravity="center_vertical"
+        android:layout_below="@id/row_curr_balance">
+
+        <TextView
+            android:id="@+id/account_due"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:textSize="13dp"
-            android:paddingTop="3dp"
-            android:paddingBottom="5dp"
-            android:layout_marginRight="10dp"/-->
-
-        <ImageView
-            android:id="@+id/transaction_attachment"
             android:gravity="center_vertical"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:layout_alignParentRight="true"
+            android:text="due date"
+            android:textSize="12dp"
+            android:visibility="gone"
+            android:textStyle="italic"
             android:paddingTop="3dp"
             android:paddingBottom="7dp"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/ic_menu_attach" />
+            android:layout_marginRight="15dp" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/row_transaction_account"
+        android:id="@+id/row_account_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/row_transaction_date">
+        android:layout_below="@id/row_account_category">
         <TextView
-            android:id="@+id/transaction_account"
-            android:text="Description"
+            android:id="@+id/account_name"
+            android:text="Account"
             android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,17 +84,16 @@
             android:paddingTop="7dp"
             android:layout_marginLeft="15dp"/>
 
-
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/row_transaction_category"
+        android:id="@+id/row_init_balance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/row_transaction_account">
+        android:layout_below="@id/row_account_name">
         <TextView
-            android:id="@+id/transaction_category"
-            android:text="Category"
+            android:id="@+id/init_balance"
+            android:text="opening balance"
             android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,8 +102,6 @@
             android:paddingTop="3dp"
             android:paddingBottom="7dp"
             android:layout_marginLeft="15dp"/>
-
-
 
     </RelativeLayout>
 

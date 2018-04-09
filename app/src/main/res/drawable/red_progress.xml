@@ -16,7 +16,7 @@
             <corners android:radius="5dip" />
             <gradient
                 android:startColor="#FC5151"
-                android:endColor="#ff0000"
+                android:endColor="#cc0000"
                 android:angle="270" />
             <!--solid
                 android:color="@color/progressRed" /-->

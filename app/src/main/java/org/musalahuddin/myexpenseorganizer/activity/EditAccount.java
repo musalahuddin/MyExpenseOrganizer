@@ -10,6 +10,7 @@ import org.musalahuddin.myexpenseorganizer.R;
 import org.musalahuddin.myexpenseorganizer.database.AccountTable;
 import org.musalahuddin.myexpenseorganizer.database.AccountView;
 //import org.musalahuddin.myexpenseorganizer.dialog.MultipleChoiceDialog;
+import org.musalahuddin.myexpenseorganizer.database.TransactionAccountTable;
 import org.musalahuddin.myexpenseorganizer.dialog.SingleChoiceDialog;
 import org.musalahuddin.myexpenseorganizer.serializable.Account;
 import org.musalahuddin.myexpenseorganizer.util.Utils;
@@ -77,6 +78,7 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
     private ScrollView mContainer;
     private Switch mSwitch;
     private EditText mETAccountBudgetDay;
+    private ImageButton mBtnClearActDue;
 
     //rows
     private TableRow mAccountNameRow;
@@ -170,11 +172,13 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
         mContainer = (ScrollView) findViewById(R.id.container_edit_account);
         mSwitch = (Switch) findViewById(R.id.mySwitch);
         mETAccountBudgetDay = (EditText) findViewById(R.id.in_account_budget_day);
+        mBtnClearActDue = (ImageButton) findViewById(R.id.clear_account_due);
 
 
         mAccountCatButton.setOnClickListener(this);
         mAccountDueButton.setOnClickListener(this);
         mETAccountBudgetDay.setOnClickListener(this);
+        mBtnClearActDue.setOnClickListener(this);
        // mAddFieldButton.setOnClickListener(this);
 
 
@@ -202,11 +206,15 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
 
             mBudgetStartDay = account.budget_start_day;
 
+            if(account.balance >  0){
+                mSwitch.setChecked(true);
+            }
+
             //populate fields
             mAccountNameText.setText(account.name);
             if(account.number != 0) mAccountNumText.setText(String.valueOf(account.number));
             if(account.description != "") mAccountDescText.setText(account.description);
-            mAccountBalText.setText(f.format(account.balance/100).toString());
+            mAccountBalText.setText(f.format(Math.abs(account.balance)/100).toString());
             if(account.limit != 0) mAccountLimitText.setText(f.format(account.limit/100).toString());
             if(account.payment != 0) mAccountPayText.setText(f.format(account.payment/100).toString());
             mAccountCatButton.setText(account.accountCategoryName);
@@ -218,8 +226,8 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
 
 
             //hide balance field when editing account
-            LinearLayout balance_row = (LinearLayout) findViewById(R.id.row_account_balance);
-            balance_row.setVisibility(View.GONE);
+            //LinearLayout balance_row = (LinearLayout) findViewById(R.id.row_account_balance);
+            //balance_row.setVisibility(View.GONE);
         }
 
 
@@ -275,6 +283,10 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.in_account_budget_day:
                 startSelectBudgetDay(BUDGET);
+                break;
+            case R.id.clear_account_due:
+                mAccountDueDate = 0L;
+                mAccountDueButton.setText("");
                 break;
             /*
             case R.id.add_field:
@@ -453,7 +465,9 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
         Log.i("due date is ",String.valueOf(due));
 
         if(mAccountId != 0L){
-            success = AccountTable.update(mAccountId, name, number, description, limit, pay, due, bstartDay, catId) != -1;
+            success = AccountTable.update(mAccountId, name, number, description, balance, limit, pay, due, bstartDay, catId) != -1;
+            //updates current balance
+            TransactionAccountTable.trigger(mAccountId,mAccountId,0L,0L);
         }
         else{
             success = AccountTable.create(name, number, description, balance, limit, pay, due, bstartDay, catId) != -1;

@@ -15,8 +15,8 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-
+        android:paddingBottom="75dp"
+        android:clipToPadding="false"
         android:focusable="true"
         android:focusableInTouchMode="true">
 
@@ -67,7 +67,7 @@
                 <TextView
                     style="@style/form_label"
                     android:id="@+id/label_account_balance"
-                    android:text="Balance"
+                    android:text="Opening Balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -88,7 +88,7 @@
                     <EditText
                         style="@style/form_input"
                         android:id="@+id/in_account_balance"
-                        android:hint="Opening balance"
+                        android:hint="Balance"
                         android:layout_toRightOf="@+id/mySwitch"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -173,16 +173,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <EditText
-                    style="@style/form_input"
-                    android:id="@+id/in_account_due"
-                    android:hint="Next payment due date"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:clickable="true"
-                    android:editable="false" />
+                    android:layout_height="match_parent" >
+
+                    <ImageButton
+                        android:id="@+id/clear_account_due"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:layout_centerVertical="true"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_action_clear"/>
+
+                    <EditText
+                        style="@style/form_input"
+                        android:id="@+id/in_account_due"
+                        android:hint="Select day of the month"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_toLeftOf="@+id/clear_account_due"
+                        android:clickable="true"
+                        android:editable="false" />
+
+                </RelativeLayout>
             </LinearLayout>
 
             <!-- Account Number -->

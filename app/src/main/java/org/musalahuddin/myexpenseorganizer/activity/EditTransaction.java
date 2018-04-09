@@ -119,6 +119,7 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
     private ScrollView mContainer;
     private Switch mSwitch;
     private TextView mPayeeLabel;
+    private ImageButton mBtnClearTransType;
 
     private SimpleCursorAdapter mAccountsAdapter;
 
@@ -198,6 +199,7 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
         mContainer = (ScrollView) findViewById(R.id.container_edit_transaction);
         mSwitch = (Switch) findViewById(R.id.mySwitch);
         mPayeeLabel = (TextView) findViewById(R.id.label_transaction_payee);
+        mBtnClearTransType = (ImageButton) findViewById(R.id.clear_transaction_type);
 
         mPayeesAdapter = new SimpleCursorAdapter(this, R.layout.support_simple_spinner_dropdown_item, null,
                 new String[]{TransactionAccountTable.COLUMN_SECONDARY_ACCOUNT_DESCRIPTION},
@@ -310,6 +312,10 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
         mBtnTransactionType.setOnClickListener(this);
         mBtnTransactionAccount.setOnClickListener(this);
         mBtnTransactionPayeeAccount.setOnClickListener(this);
+        mBtnClearTransType.setOnClickListener(this);
+
+        //default to other
+        mSpTransactionPayee.setSelection(1);
 
         if(extras != null){
             Transaction transaction = (Transaction) extras.getSerializable("mtransaction");
@@ -387,12 +393,14 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
 
             if(mSecondaryAccountId == 1L){
                 //Log.i("matching","secondaryId");
-                mSpTransactionPayee.setSelection(1);
+                //mSpTransactionPayee.setSelection(1);
                 mEtTransactionPayeeOther.setText(mSecondaryAccountDescription);
                 //mSpTransactionTo.setEnabled(false);
                 //mEtTransactionToOther.setEnabled(false);
             }
             else{
+
+                mSpTransactionPayee.setSelection(0);
                 //mSpTransactionTo.setEnabled(false);
                 //mBtnTransactionToAccount.setEnabled(false);
             }
@@ -515,6 +523,13 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
         }
         */
 
+        String transactionAmount = mEtTransactionAmount.getText().toString();
+        if(TextUtils.isEmpty(transactionAmount.trim())){
+            //Toast.makeText(this, "Please enter amount", Toast.LENGTH_LONG).show();
+            mEtTransactionAmount.setError("Please enter amount");
+            return false;
+        }
+
         if(mSecondaryAccountId == 0L){
             //Toast.makeText(this, "Please select date", Toast.LENGTH_LONG).show();
             mBtnTransactionPayeeAccount.setError("Please select Account");
@@ -530,12 +545,6 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
             }
         }
 
-        String transactionAmount = mEtTransactionAmount.getText().toString();
-        if(TextUtils.isEmpty(transactionAmount.trim())){
-            //Toast.makeText(this, "Please enter amount", Toast.LENGTH_LONG).show();
-            mEtTransactionAmount.setError("Please enter amount");
-            return false;
-        }
 
         if(mTransactionDate == 0L){
             //Toast.makeText(this, "Please select date", Toast.LENGTH_LONG).show();
@@ -737,6 +746,11 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
             case R.id.in_transaction_payee_account:
                 //Toast.makeText(this, "To Account", Toast.LENGTH_SHORT).show();
                 startSelectToAccount();
+                break;
+
+            case R.id.clear_transaction_type:
+                mTransactionCatId = 1L;
+                mBtnTransactionType.setText("");
                 break;
         }
 
@@ -1056,6 +1070,14 @@ public class EditTransaction extends AppCompatActivity implements OnClickListene
                 break;
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        //try to prevent cursor leak
+        mPayeesAdapter.changeCursor(null);
+
+        super.onPause();
     }
 
 

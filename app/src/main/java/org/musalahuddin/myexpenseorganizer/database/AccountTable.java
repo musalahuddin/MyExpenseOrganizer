@@ -98,9 +98,9 @@ public class AccountTable extends Model{
         initialValues.put(COLUMN_NAME, name);
         initialValues.put(COLUMN_NUMBER, number);
         initialValues.put(COLUMN_DESCRIPTION, description);
-        initialValues.put(COLUMN_INIT_BALANCE, (int)init_balance);
-        initialValues.put(COLUMN_CREDIT_LIMIT, (int)credit_limit);
-        initialValues.put(COLUMN_MONTHLY_PAYMENT, (int)monthly_payment);
+        initialValues.put(COLUMN_INIT_BALANCE, init_balance);
+        initialValues.put(COLUMN_CREDIT_LIMIT, credit_limit);
+        initialValues.put(COLUMN_MONTHLY_PAYMENT, monthly_payment);
         initialValues.put(COLUMN_DUE_DATE, due_date);
         initialValues.put(COLUMN_BUDGET_START_DAY, budget_start_day);
         initialValues.put(COLUMN_ACCOUNT_CATEGORY_ID, account_category_id);
@@ -127,6 +127,7 @@ public class AccountTable extends Model{
             String name,
             int number,
             String notes,
+            double init_balance,
             double credit_limit,
             double monthly_payment,
             long due_date,
@@ -135,7 +136,7 @@ public class AccountTable extends Model{
     ){
 
         // convert amount to integer before storing it in database
-        //init_balance = init_balance*100;
+        init_balance = init_balance*100;
         credit_limit = credit_limit*100;
         monthly_payment = monthly_payment*100;
 
@@ -143,9 +144,9 @@ public class AccountTable extends Model{
         args.put(COLUMN_NAME, name);
         args.put(COLUMN_NUMBER, number);
         args.put(COLUMN_DESCRIPTION, notes);
-        //args.put(COLUMN_INIT_BALANCE, (int)init_balance);
-        args.put(COLUMN_CREDIT_LIMIT, (int)credit_limit);
-        args.put(COLUMN_MONTHLY_PAYMENT, (int)monthly_payment);
+        args.put(COLUMN_INIT_BALANCE, init_balance);
+        args.put(COLUMN_CREDIT_LIMIT, credit_limit);
+        args.put(COLUMN_MONTHLY_PAYMENT, monthly_payment);
         args.put(COLUMN_DUE_DATE, due_date);
         args.put(COLUMN_BUDGET_START_DAY, budget_start_day);
         args.put(COLUMN_ACCOUNT_CATEGORY_ID, account_category_id);

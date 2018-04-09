@@ -21,7 +21,7 @@ import android.widget.Toast;
 import org.musalahuddin.myexpenseorganizer.activity.Preference;
 import org.musalahuddin.myexpenseorganizer.database.MyExpenseOrganizerDatabaseHelper;
 import org.musalahuddin.myexpenseorganizer.dialog.ConfirmationDialog;
-import org.musalahuddin.myexpenseorganizer.fragment.AccountsFragment;
+import org.musalahuddin.myexpenseorganizer.fragment.AccountsFragment2;
 import org.musalahuddin.myexpenseorganizer.fragment.BudgetsFragment;
 import org.musalahuddin.myexpenseorganizer.fragment.TransactionsFragment;
 import org.musalahuddin.myexpenseorganizer.permission.Storage;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         //set title
         setTitle("Accounts");
         //set fragment
-        fragment = new AccountsFragment();
+        fragment = new AccountsFragment2();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment).commit();
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity
             //set title
             setTitle("Accounts");
             //set fragment
-             fragment = new AccountsFragment();
+             fragment = new AccountsFragment2();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, fragment).commit();
@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void loadDefaultData(){
+    public void loadDefaultData(){      
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity
     public void onPositive(int position) {
         switch (mCurrentFragment) {
             case ACCOUNT:
-                ((AccountsFragment)fragment).deleteAccount(position);
+                ((AccountsFragment2)fragment).deleteAccount(position);
                 break;
             case TRANSACTION:
                 ((TransactionsFragment)fragment).deleteTransaction(position);

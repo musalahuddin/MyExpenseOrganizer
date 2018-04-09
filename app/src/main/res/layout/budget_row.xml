@@ -28,8 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/row_header"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp">
 
         <TextView
             android:id="@+id/tv_child_category"
@@ -37,9 +37,18 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:textSize="13dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="15dp"
             android:text="cat"/>
+
+        <TextView
+            android:id="@+id/tv_budget_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textSize="13dp"
+            android:paddingRight="15dp"
+            android:layout_alignParentRight="true"
+            android:text="info"/>
 
         <ProgressBar
             android:id="@+id/pb_budget_progress"
@@ -47,7 +56,7 @@
             android:layout_below="@id/tv_child_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:paddingRight="10dp"
             android:paddingLeft="10dp"
             android:max="100" />

@@ -154,6 +154,8 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
 
                 spent = Math.abs(spent);
 
+                double bal = ((total*100)-(spent*100));
+
                 double progress = (spent/total)*100;
 
                 Log.i("onLoadFinished", "sql--spent: "+String.valueOf(spent));
@@ -167,6 +169,7 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
                 TextView tvChildCategory = (TextView) row.findViewById(R.id.tv_child_category);
                 TextView tvbudgetInfo = (TextView) row.findViewById(R.id.tv_budget_info);
                 ProgressBar pbBudgetProgress = (ProgressBar) row.findViewById(R.id.pb_budget_progress);
+                TextView tvBudgetBalance = (TextView) row.findViewById(R.id.tv_budget_balance);
 
                 // reset
                 //tvParentCategory.setVisibility(View.VISIBLE);
@@ -193,6 +196,14 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
                     else{
                         tvParentCategory.setVisibility(View.VISIBLE);
                     }
+                }
+
+                //setting balance
+                if(bal<0){
+                    tvBudgetBalance.setText(n.format(Math.abs(bal/100)) + " over");
+                }
+                else{
+                    tvBudgetBalance.setText(n.format(Math.abs(bal/100)) + " left");
                 }
 
                 //setting values
@@ -240,12 +251,21 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
         //currCal = Calendar.getInstance();
         //nextCal = Calendar.getInstance();
 
+        /*
         if(mStartDay > currMaxDay){
             mStartDay = currMaxDay;
         }
+        */
+
+        if(mStartDay > currCalendar.get(currCalendar.DAY_OF_MONTH)){
+            currCal.set(currCalendar.get(currCalendar.YEAR), currCalendar.get(currCalendar.MONTH)-1, mStartDay, 0, 0, 0);
+        }
+        else{
+            currCal.set(currCalendar.get(currCalendar.YEAR), currCalendar.get(currCalendar.MONTH), mStartDay, 0, 0, 0);
+        }
 
         // compute current and next dates
-        currCal.set(currCalendar.get(currCalendar.YEAR), currCalendar.get(currCalendar.MONTH), mStartDay, 0, 0, 0);
+        //currCal.set(currCalendar.get(currCalendar.YEAR), currCalendar.get(currCalendar.MONTH), mStartDay, 0, 0, 0);
         nextCal.setTimeInMillis(currCal.getTimeInMillis());
         nextCal.add(Calendar.MONTH, 1);
         nextCal.add(Calendar.SECOND, -1);
