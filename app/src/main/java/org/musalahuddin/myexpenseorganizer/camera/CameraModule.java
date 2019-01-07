@@ -28,6 +28,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -153,6 +154,9 @@ public class CameraModule extends FragmentActivity{
             @Override
             public void onClick(DialogInterface d, int which) {
                 if(which == 0 && cameraAvailable) {
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                     fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
