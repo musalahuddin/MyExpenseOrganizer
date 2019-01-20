@@ -248,7 +248,7 @@
             <!-- Type -->
             <LinearLayout
                 android:id="@+id/row_transaction_type"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="vertical"
                 android:paddingTop="@dimen/row_vertical_padding"
                 android:paddingBottom="@dimen/row_vertical_padding"

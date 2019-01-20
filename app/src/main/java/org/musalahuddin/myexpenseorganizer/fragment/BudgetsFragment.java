@@ -203,7 +203,7 @@ public class BudgetsFragment extends Fragment implements LoaderManager.LoaderCal
                     tvBudgetBalance.setText(n.format(Math.abs(bal/100)) + " over");
                 }
                 else{
-                    tvBudgetBalance.setText(n.format(Math.abs(bal/100)) + " left");
+                    tvBudgetBalance.setText(n.format(Math.abs(bal/100)) + " remaining");
                 }
 
                 //setting values
