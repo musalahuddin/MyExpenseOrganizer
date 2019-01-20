@@ -62,6 +62,11 @@
     <string name="picture_view">View Picture</string>
     <string name="budget_new_title">New budget</string>
     <string name="budget_edit_title">Edit budget</string>
+    <string name="pref_backup_title_manage">Backup</string>
+    <string name="pref_manage_backup_title">Backup</string>
+    <string name="pref_manage_backup_summary">Create a backup of database and preferences.</string>
+    <string name="pref_manage_restore_title">Restore</string>
+    <string name="pref_manage_restore_summary">Restore database and preferences.</string>
 
     <string-array name="action_list">
         <item >chase freedom</item>

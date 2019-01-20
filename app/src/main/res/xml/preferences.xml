@@ -26,6 +26,23 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/pref_backup_title_manage">
+
+        <PreferenceScreen
+            android:title="@string/pref_manage_backup_title"
+            android:summary="@string/pref_manage_backup_summary">
+            <intent android:action="myexpenseorganizer.intent.manage.backup"/>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="@string/pref_manage_restore_title"
+            android:summary="@string/pref_manage_restore_summary">
+            <intent android:action="myexpenseorganizer.intent.manage.restore"/>
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
     <!--PreferenceCategory
         android:title="Export">
 
