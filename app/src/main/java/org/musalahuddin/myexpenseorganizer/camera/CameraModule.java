@@ -47,6 +47,8 @@ public class CameraModule extends FragmentActivity{
 
     private static Uri fileUri; // file url to store image/video
 
+    private static StrictMode.VmPolicy.Builder builder;
+
     public interface ClearImageCallback {
         public void clearImage();
 
@@ -127,6 +129,8 @@ public class CameraModule extends FragmentActivity{
 
     public static void showPictureLauncher(final Activity activity, final ClearImageCallback clearImageOption) {
 
+        byPassStrictMode();
+
         ArrayList<String> options = new ArrayList<String>();
 
         final Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -154,9 +158,6 @@ public class CameraModule extends FragmentActivity{
             @Override
             public void onClick(DialogInterface d, int which) {
                 if(which == 0 && cameraAvailable) {
-                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                    StrictMode.setVmPolicy(builder.build());
-
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                     fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
@@ -193,6 +194,12 @@ public class CameraModule extends FragmentActivity{
 
     }
 
+    public static void byPassStrictMode(){
+        if(builder == null) {
+            builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
+    }
 
     /*
 	 * Creating file uri to store image/video
