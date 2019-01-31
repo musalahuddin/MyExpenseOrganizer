@@ -14,6 +14,7 @@ import org.musalahuddin.myexpenseorganizer.database.AccountView;
 import org.musalahuddin.myexpenseorganizer.database.BudgetView;
 import org.musalahuddin.myexpenseorganizer.database.MyExpenseOrganizerDatabaseHelper;
 import org.musalahuddin.myexpenseorganizer.database.TransactionView;
+import org.musalahuddin.myexpenseorganizer.dialog.ConfirmationDialog;
 import org.musalahuddin.myexpenseorganizer.fragment.MyPreferenceFragment;
 import org.musalahuddin.myexpenseorganizer.permission.Storage;
 
@@ -23,7 +24,7 @@ import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 import android.content.ContentResolver;
 
-public class BackupRestoreActivity extends AppCompatActivity {
+public class BackupRestoreActivity extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener{
 
     boolean mBackup;
 
@@ -43,7 +44,14 @@ public class BackupRestoreActivity extends AppCompatActivity {
             doBackup();
         }
         else{
-            doRestore();
+            Bundle args = new Bundle();
+            args.putString(ConfirmationDialog.KEY_TITLE, "Restore");
+            args.putString(ConfirmationDialog.KEY_MESSAGE, "Are you sure you want to restore?");
+            args.putString(ConfirmationDialog.KEY_NEGATIVE_BUTTON_LABEL, "CANCEL");
+            args.putString(ConfirmationDialog.KEY_POSITIVE_BUTTON_LABEL, "OK");
+
+            ConfirmationDialog.newInstance(args)
+                    .show(getSupportFragmentManager(), "RESTORE");
         }
     }
 
@@ -173,5 +181,15 @@ public class BackupRestoreActivity extends AppCompatActivity {
         initializeDb();
         finish();
 
+    }
+
+    @Override
+    public void onNegative() {
+        finish();
+    }
+
+    @Override
+    public void onPositive(int position) {
+        doRestore();
     }
 }
